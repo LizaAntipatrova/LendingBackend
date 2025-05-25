@@ -15,7 +15,7 @@ import java.util.Set;
 public class Manager {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String employeeId;
+    private Long employeeId;
     private String lastName;
     private String firstName;
     private String middleName;

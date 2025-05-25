@@ -1,0 +1,332 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: lisavetka
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: bigserial
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: login
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: password
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: registration_date
+                  type: timestamp
+              - column:
+                  name: role
+                  type: varchar(50)
+
+        - createTable:
+            tableName: credit_categories
+            columns:
+              - column:
+                  name: id
+                  type: bigserial
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: text_name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+
+        - createTable:
+            tableName: credit_products
+            columns:
+              - column:
+                  name: code
+                  type: bigserial
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+              - column:
+                  name: interest_rate
+                  type: numeric(19,2)
+              - column:
+                  name: min_amount
+                  type: numeric(19,2)
+              - column:
+                  name: max_amount
+                  type: numeric(19,2)
+              - column:
+                  name: min_term
+                  type: integer
+              - column:
+                  name: max_term
+                  type: integer
+              - column:
+                  name: min_down_payment
+                  type: numeric(19,2)
+              - column:
+                  name: description
+                  type: text
+              - column:
+                  name: category_id
+                  type: bigint
+            addForeignKeyConstraint:
+              baseTableName: credit_products
+              baseColumnNames: category_id
+              referencedTableName: credit_categories
+              referencedColumnNames: id
+              constraintName: fk_credit_product_category
+
+        - createTable:
+            tableName: managers
+            columns:
+              - column:
+                  name: employee_id
+                  type: bigserial
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: last_name
+                  type: varchar(255)
+              - column:
+                  name: first_name
+                  type: varchar(255)
+              - column:
+                  name: middle_name
+                  type: varchar(255)
+              - column:
+                  name: phone
+                  type: varchar(50)
+              - column:
+                  name: email
+                  type: varchar(255)
+              - column:
+                  name: user_id
+                  type: bigint
+            addForeignKeyConstraint:
+              baseTableName: managers
+              baseColumnNames: user_id
+              referencedTableName: users
+              referencedColumnNames: id
+              constraintName: fk_manager_user
+
+        - createTable:
+            tableName: manager_specializations
+            columns:
+              - column:
+                  name: manager_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: specialization_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+            addPrimaryKey:
+              columnNames: manager_id, specialization_id
+              constraintName: pk_manager_specialization
+            addForeignKeyConstraint:
+              baseTableName: manager_specializations
+              baseColumnNames: manager_id
+              referencedTableName: managers
+              referencedColumnNames: employee_id
+              constraintName: fk_specialization_manager
+            addForeignKeyConstraint:
+              baseTableName: manager_specializations
+              baseColumnNames: specialization_id
+              referencedTableName: credit_categories
+              referencedColumnNames: id
+              constraintName: fk_specialization_category
+
+        - createTable:
+            tableName: clients
+            columns:
+              - column:
+                  name: account_number
+                  type: bigserial
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: last_name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: first_name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: middle_name
+                  type: varchar(255)
+              - column:
+                  name: passport_series
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: passport_number
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: birth_date
+                  type: date
+                  constraints:
+                    nullable: false
+              - column:
+                  name: address
+                  type: text
+              - column:
+                  name: phone
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: varchar(255)
+              - column:
+                  name: user_id
+                  type: bigint
+            constraints:
+              check: "birth_date <= (now() - interval '18 years')"
+            addForeignKeyConstraint:
+              baseTableName: clients
+              baseColumnNames: user_id
+              referencedTableName: users
+              referencedColumnNames: id
+              constraintName: fk_client_user
+
+        - createTable:
+            tableName: applications
+            columns:
+              - column:
+                  name: id
+                  type: bigserial
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: client_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: product_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: manager_id
+                  type: bigint
+              - column:
+                  name: application_date
+                  type: timestamp
+              - column:
+                  name: down_payment
+                  type: numeric(19,2)
+              - column:
+                  name: requested_amount
+                  type: numeric(19,2)
+              - column:
+                  name: term
+                  type: integer
+              - column:
+                  name: status
+                  type: varchar(50)
+              - column:
+                  name: decision
+                  type: text
+              - column:
+                  name: payment_type
+                  type: varchar(50)
+            addForeignKeyConstraint:
+              baseTableName: applications
+              baseColumnNames: client_id
+              referencedTableName: clients
+              referencedColumnNames: account_number
+              constraintName: fk_application_client
+            addForeignKeyConstraint:
+              baseTableName: applications
+              baseColumnNames: product_id
+              referencedTableName: credit_products
+              referencedColumnNames: code
+              constraintName: fk_application_product
+            addForeignKeyConstraint:
+              baseTableName: applications
+              baseColumnNames: manager_id
+              referencedTableName: managers
+              referencedColumnNames: employee_id
+              constraintName: fk_application_manager
+
+        - createTable:
+            tableName: credits
+            columns:
+              - column:
+                  name: contract_number
+                  type: bigserial
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: contract_date
+                  type: date
+              - column:
+                  name: application_id
+                  type: bigint
+              - column:
+                  name: status
+                  type: varchar(50)
+            addForeignKeyConstraint:
+              baseTableName: credits
+              baseColumnNames: application_id
+              referencedTableName: applications
+              referencedColumnNames: id
+              constraintName: fk_credit_application
+
+        - createTable:
+            tableName: transactions
+            columns:
+              - column:
+                  name: id
+                  type: bigserial
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: credit_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: transaction_date
+                  type: date
+              - column:
+                  name: amount
+                  type: numeric(19,2)
+              - column:
+                  name: description
+                  type: varchar(50)
+            addForeignKeyConstraint:
+              baseTableName: transactions
+              baseColumnNames: credit_id
+              referencedTableName: credits
+              referencedColumnNames: contract_number
+              constraintName: fk_transaction_credit

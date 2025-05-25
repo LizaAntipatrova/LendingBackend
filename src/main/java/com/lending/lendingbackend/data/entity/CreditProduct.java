@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class CreditProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String code;
+    private Long code;
     private String name;
     private Double interestRate;
     private Double minAmount;
