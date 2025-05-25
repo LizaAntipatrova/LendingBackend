@@ -1,0 +1,427 @@
+-- -- -- Создание последовательностей для генерации ID
+-- -- CREATE SEQUENCE IF NOT EXISTS user_seq START 1 INCREMENT 1;
+-- -- CREATE SEQUENCE IF NOT EXISTS role_seq START 1 INCREMENT 1;
+-- -- CREATE SEQUENCE IF NOT EXISTS client_seq START 1 INCREMENT 1;
+-- -- CREATE SEQUENCE IF NOT EXISTS manager_seq START 1 INCREMENT 1;
+-- -- CREATE SEQUENCE IF NOT EXISTS credit_product_seq START 1 INCREMENT 1;
+-- -- CREATE SEQUENCE IF NOT EXISTS credit_category_seq START 1 INCREMENT 1;
+-- -- CREATE SEQUENCE IF NOT EXISTS application_seq START 1 INCREMENT 1;
+-- -- CREATE SEQUENCE IF NOT EXISTS application_status_seq START 1 INCREMENT 1;
+-- -- CREATE SEQUENCE IF NOT EXISTS payment_type_seq START 1 INCREMENT 1;
+-- -- CREATE SEQUENCE IF NOT EXISTS credit_seq START 1 INCREMENT 1;
+-- -- CREATE SEQUENCE IF NOT EXISTS credit_status_seq START 1 INCREMENT 1;
+-- -- CREATE SEQUENCE IF NOT EXISTS transaction_seq START 1 INCREMENT 1;
+-- -- CREATE SEQUENCE IF NOT EXISTS transaction_type_seq START 1 INCREMENT 1;
+-- -- CREATE SEQUENCE IF NOT EXISTS transaction_desc_seq START 1 INCREMENT 1;
+-- -- CREATE SEQUENCE IF NOT EXISTS manager_specialization_seq START 1 INCREMENT 1;
+-- --
+-- -- -- Таблица ролей пользователей
+-- -- CREATE TABLE IF NOT EXISTS user_roles (
+-- --                                           id BIGINT PRIMARY KEY DEFAULT nextval('role_seq'),
+-- --                                           role_name VARCHAR(50) NOT NULL UNIQUE
+-- -- );
+-- --
+-- -- -- Таблица пользователей
+-- -- CREATE TABLE IF NOT EXISTS users (
+-- --                                      id BIGINT PRIMARY KEY DEFAULT nextval('user_seq'),
+-- --                                      login VARCHAR(50) NOT NULL UNIQUE,
+-- --                                      password VARCHAR(100) NOT NULL,
+-- --                                      registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+-- --                                      role_id BIGINT NOT NULL,
+-- --                                      FOREIGN KEY (role_id) REFERENCES user_roles(id)
+-- -- );
+-- --
+-- -- -- Таблица клиентов
+-- -- CREATE TABLE IF NOT EXISTS clients (
+-- --                                        id BIGINT PRIMARY KEY DEFAULT nextval('client_seq'),
+-- --                                        account_number VARCHAR(20) NOT NULL UNIQUE,
+-- --                                        last_name VARCHAR(50) NOT NULL,
+-- --                                        first_name VARCHAR(50) NOT NULL,
+-- --                                        middle_name VARCHAR(50),
+-- --                                        passport_series VARCHAR(10) NOT NULL,
+-- --                                        passport_number VARCHAR(20) NOT NULL,
+-- --                                        birth_date DATE NOT NULL,
+-- --                                        address TEXT NOT NULL,
+-- --                                        phone VARCHAR(20) NOT NULL,
+-- --                                        email VARCHAR(100),
+-- --                                        user_id BIGINT NOT NULL UNIQUE,
+-- --                                        FOREIGN KEY (user_id) REFERENCES users(id),
+-- --                                        CONSTRAINT passport_unique UNIQUE (passport_series, passport_number)
+-- -- );
+--
+-- -- Таблица менеджеров
+-- CREATE TABLE IF NOT EXISTS managers (
+--                                         id BIGINT PRIMARY KEY DEFAULT nextval('manager_seq'),
+--                                         personnel_number VARCHAR(20) NOT NULL UNIQUE,
+--                                         last_name VARCHAR(50) NOT NULL,
+--                                         first_name VARCHAR(50) NOT NULL,
+--                                         middle_name VARCHAR(50),
+--                                         phone VARCHAR(20) NOT NULL,
+--                                         email VARCHAR(100) NOT NULL,
+--                                         user_id BIGINT NOT NULL UNIQUE,
+--                                         FOREIGN KEY (user_id) REFERENCES users(id)
+-- );
+--
+-- -- Таблица категорий кредитования
+-- CREATE TABLE IF NOT EXISTS credit_categories (
+--                                                  id BIGINT PRIMARY KEY DEFAULT nextval('credit_category_seq'),
+--                                                  category_name VARCHAR(100) NOT NULL UNIQUE
+-- );
+--
+-- -- Таблица специализаций менеджеров
+-- CREATE TABLE IF NOT EXISTS manager_specializations (
+--                                                        id BIGINT PRIMARY KEY DEFAULT nextval('manager_specialization_seq'),
+--                                                        manager_id BIGINT NOT NULL,
+--                                                        credit_category_id BIGINT NOT NULL,
+--                                                        FOREIGN KEY (manager_id) REFERENCES managers(id),
+--                                                        FOREIGN KEY (credit_category_id) REFERENCES credit_categories(id),
+--                                                        CONSTRAINT unique_specialization UNIQUE (manager_id, credit_category_id)
+-- );
+--
+-- -- Таблица кредитных продуктов
+-- CREATE TABLE IF NOT EXISTS credit_products (
+--                                                id BIGINT PRIMARY KEY DEFAULT nextval('credit_product_seq'),
+--                                                credit_code VARCHAR(20) NOT NULL UNIQUE,
+--                                                product_name VARCHAR(100) NOT NULL,
+--                                                interest_rate DECIMAL(5,2) NOT NULL,
+--                                                min_amount DECIMAL(15,2) NOT NULL,
+--                                                max_amount DECIMAL(15,2) NOT NULL,
+--                                                min_term_months INTEGER NOT NULL,
+--                                                max_term_months INTEGER NOT NULL,
+--                                                down_payment_percent DECIMAL(5,2) NOT NULL,
+--                                                credit_category_id BIGINT NOT NULL,
+--                                                description TEXT,
+--                                                FOREIGN KEY (credit_category_id) REFERENCES credit_categories(id)
+-- );
+--
+-- -- Таблица статусов заявки
+-- CREATE TABLE IF NOT EXISTS application_statuses (
+--                                                     id BIGINT PRIMARY KEY DEFAULT nextval('application_status_seq'),
+--                                                     status_name VARCHAR(50) NOT NULL UNIQUE
+-- );
+--
+-- -- Таблица типов платежей
+-- CREATE TABLE IF NOT EXISTS payment_types (
+--                                              id BIGINT PRIMARY KEY DEFAULT nextval('payment_type_seq'),
+--                                              type_name VARCHAR(50) NOT NULL UNIQUE
+-- );
+--
+-- -- Таблица заявок на кредит
+-- CREATE TABLE IF NOT EXISTS credit_applications (
+--                                                    id BIGINT PRIMARY KEY DEFAULT nextval('application_seq'),
+--                                                    application_number VARCHAR(20) NOT NULL UNIQUE,
+--                                                    client_id BIGINT NOT NULL,
+--                                                    credit_product_id BIGINT NOT NULL,
+--                                                    manager_id BIGINT,
+--                                                    application_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+--                                                    down_payment_amount DECIMAL(15,2) NOT NULL,
+--                                                    requested_amount DECIMAL(15,2) NOT NULL,
+--                                                    loan_term_months INTEGER NOT NULL,
+--                                                    status_id BIGINT NOT NULL,
+--                                                    is_approved BOOLEAN,
+--                                                    payment_type_id BIGINT NOT NULL,
+--                                                    FOREIGN KEY (client_id) REFERENCES clients(id),
+--                                                    FOREIGN KEY (credit_product_id) REFERENCES credit_products(id),
+--                                                    FOREIGN KEY (manager_id) REFERENCES managers(id),
+--                                                    FOREIGN KEY (status_id) REFERENCES application_statuses(id),
+--                                                    FOREIGN KEY (payment_type_id) REFERENCES payment_types(id)
+-- );
+--
+-- -- Таблица статусов кредита
+-- CREATE TABLE IF NOT EXISTS credit_statuses (
+--                                                id BIGINT PRIMARY KEY DEFAULT nextval('credit_status_seq'),
+--                                                status_name VARCHAR(50) NOT NULL UNIQUE
+-- );
+--
+-- -- Таблица кредитов
+-- CREATE TABLE IF NOT EXISTS credits (
+--                                        id BIGINT PRIMARY KEY DEFAULT nextval('credit_seq'),
+--                                        contract_number VARCHAR(20) NOT NULL UNIQUE,
+--                                        contract_date DATE NOT NULL,
+--                                        application_id BIGINT NOT NULL UNIQUE,
+--                                        status_id BIGINT NOT NULL,
+--                                        FOREIGN KEY (application_id) REFERENCES credit_applications(id),
+--                                        FOREIGN KEY (status_id) REFERENCES credit_statuses(id)
+-- );
+--
+-- -- Таблица типов транзакций
+-- CREATE TABLE IF NOT EXISTS transaction_types (
+--                                                  id BIGINT PRIMARY KEY DEFAULT nextval('transaction_type_seq'),
+--                                                  type_name VARCHAR(50) NOT NULL UNIQUE
+-- );
+--
+-- -- Таблица описаний транзакций
+-- CREATE TABLE IF NOT EXISTS transaction_descriptions (
+--                                                         id BIGINT PRIMARY KEY DEFAULT nextval('transaction_desc_seq'),
+--                                                         transaction_type_id BIGINT NOT NULL,
+--                                                         description TEXT NOT NULL,
+--                                                         FOREIGN KEY (transaction_type_id) REFERENCES transaction_types(id)
+-- );
+--
+-- -- Таблица транзакций
+-- CREATE TABLE IF NOT EXISTS transactions (
+--                                             id BIGINT PRIMARY KEY DEFAULT nextval('transaction_seq'),
+--                                             transaction_number VARCHAR(20) NOT NULL UNIQUE,
+--                                             transaction_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+--                                             credit_id BIGINT NOT NULL,
+--                                             amount DECIMAL(15,2) NOT NULL,
+--                                             description_id BIGINT NOT NULL,
+--                                             FOREIGN KEY (credit_id) REFERENCES credits(id),
+--                                             FOREIGN KEY (description_id) REFERENCES transaction_descriptions(id)
+-- );
+--
+-- -- Индексы для улучшения производительности
+-- CREATE INDEX IF NOT EXISTS idx_users_login ON users(login);
+-- CREATE INDEX IF NOT EXISTS idx_clients_user ON clients(user_id);
+-- CREATE INDEX IF NOT EXISTS idx_clients_passport ON clients(passport_series, passport_number);
+-- CREATE INDEX IF NOT EXISTS idx_clients_account ON clients(account_number);
+-- CREATE INDEX IF NOT EXISTS idx_managers_user ON managers(user_id);
+-- CREATE INDEX IF NOT EXISTS idx_managers_personnel ON managers(personnel_number);
+-- CREATE INDEX IF NOT EXISTS idx_specializations_manager ON manager_specializations(manager_id);
+-- CREATE INDEX IF NOT EXISTS idx_specializations_category ON manager_specializations(credit_category_id);
+-- CREATE INDEX IF NOT EXISTS idx_credit_products_category ON credit_products(credit_category_id);
+-- CREATE INDEX IF NOT EXISTS idx_credit_products_code ON credit_products(credit_code);
+-- CREATE INDEX IF NOT EXISTS idx_applications_client ON credit_applications(client_id);
+-- CREATE INDEX IF NOT EXISTS idx_applications_product ON credit_applications(credit_product_id);
+-- CREATE INDEX IF NOT EXISTS idx_applications_manager ON credit_applications(manager_id);
+-- CREATE INDEX IF NOT EXISTS idx_applications_status ON credit_applications(status_id);
+-- CREATE INDEX IF NOT EXISTS idx_applications_number ON credit_applications(application_number);
+-- CREATE INDEX IF NOT EXISTS idx_credits_application ON credits(application_id);
+-- CREATE INDEX IF NOT EXISTS idx_credits_status ON credits(status_id);
+-- CREATE INDEX IF NOT EXISTS idx_credits_contract ON credits(contract_number);
+-- CREATE INDEX IF NOT EXISTS idx_transactions_credit ON transactions(credit_id);
+-- CREATE INDEX IF NOT EXISTS idx_transactions_date ON transactions(transaction_date);
+-- CREATE INDEX IF NOT EXISTS idx_transactions_number ON transactions(transaction_number);
+--
+-- -- Функции на PL/pgSQL вместо CREATE ALIAS
+--
+-- -- Функция регистрации нового пользователя
+-- CREATE OR REPLACE FUNCTION register_user(
+--     p_login VARCHAR,
+--     p_password VARCHAR,
+--     p_role_name VARCHAR,
+--     p_account_number VARCHAR,
+--     p_last_name VARCHAR,
+--     p_first_name VARCHAR,
+--     p_middle_name VARCHAR,
+--     p_passport_series VARCHAR,
+--     p_passport_number VARCHAR,
+--     p_birth_date DATE,
+--     p_address TEXT,
+--     p_phone VARCHAR,
+--     p_email VARCHAR
+-- ) RETURNS VARCHAR AS $$
+-- DECLARE
+--     v_role_id BIGINT;
+--     v_user_id BIGINT;
+-- BEGIN
+--     -- Проверяем существует ли роль
+--     SELECT id INTO v_role_id FROM user_roles WHERE role_name = p_role_name;
+--     IF NOT FOUND THEN
+--         RAISE EXCEPTION 'Role does not exist';
+--     END IF;
+--
+--     -- Создаем пользователя
+--     INSERT INTO users (login, password, role_id)
+--     VALUES (p_login, p_password, v_role_id)
+--     RETURNING id INTO v_user_id;
+--
+--     -- Создаем клиента
+--     INSERT INTO clients (account_number, last_name, first_name, middle_name,
+--                          passport_series, passport_number, birth_date, address, phone, email, user_id)
+--     VALUES (p_account_number, p_last_name, p_first_name, p_middle_name,
+--             p_passport_series, p_passport_number, p_birth_date, p_address, p_phone, p_email, v_user_id);
+--
+--     RETURN p_account_number;
+-- END;
+-- $$ LANGUAGE plpgsql;
+--
+-- -- Функция создания заявки на кредит
+-- CREATE OR REPLACE FUNCTION create_credit_application(
+--     p_client_account_number VARCHAR,
+--     p_credit_product_code VARCHAR,
+--     p_down_payment DECIMAL,
+--     p_requested_amount DECIMAL,
+--     p_loan_term_months INTEGER,
+--     p_payment_type_id BIGINT
+-- ) RETURNS VARCHAR AS $$
+-- DECLARE
+--     v_client_id BIGINT;
+--     v_product_id BIGINT;
+--     v_status_id BIGINT;
+--     v_application_number VARCHAR;
+-- BEGIN
+--     -- Получаем ID клиента
+--     SELECT id INTO v_client_id FROM clients WHERE account_number = p_client_account_number;
+--     IF NOT FOUND THEN
+--         RAISE EXCEPTION 'Client not found';
+--     END IF;
+--
+--     -- Получаем ID кредитного продукта
+--     SELECT id INTO v_product_id FROM credit_products WHERE credit_code = p_credit_product_code;
+--     IF NOT FOUND THEN
+--         RAISE EXCEPTION 'Credit product not found';
+--     END IF;
+--
+--     -- Генерация номера заявки
+--     v_application_number := 'APP-' || EXTRACT(EPOCH FROM CURRENT_TIMESTAMP);
+--
+--     -- Получаем начальный статус (ожидает рассмотрения)
+--     SELECT id INTO v_status_id FROM application_statuses WHERE status_name = 'PENDING';
+--     IF NOT FOUND THEN
+--         RAISE EXCEPTION 'Default application status not found';
+--     END IF;
+--
+--     -- Создаем заявку
+--     INSERT INTO credit_applications (application_number, client_id, credit_product_id,
+--                                      application_date, down_payment_amount, requested_amount,
+--                                      loan_term_months, status_id, is_approved, payment_type_id)
+--     VALUES (v_application_number, v_client_id, v_product_id, CURRENT_TIMESTAMP,
+--             p_down_payment, p_requested_amount, p_loan_term_months, v_status_id, NULL, p_payment_type_id);
+--
+--     RETURN v_application_number;
+-- END;
+-- $$ LANGUAGE plpgsql;
+--
+-- -- Функция обработки заявки менеджером
+-- CREATE OR REPLACE FUNCTION process_application(
+--     p_application_number VARCHAR,
+--     p_manager_personnel_number VARCHAR,
+--     p_is_approved BOOLEAN,
+--     p_comment TEXT
+-- ) RETURNS VOID AS $$
+-- DECLARE
+--     v_manager_id BIGINT;
+--     v_application_id BIGINT;
+--     v_current_status_id BIGINT;
+--     v_new_status_id BIGINT;
+--     v_new_status_name VARCHAR;
+--     v_contract_number VARCHAR;
+--     v_credit_status_id BIGINT;
+-- BEGIN
+--     -- Получаем ID менеджера
+--     SELECT id INTO v_manager_id FROM managers WHERE personnel_number = p_manager_personnel_number;
+--     IF NOT FOUND THEN
+--         RAISE EXCEPTION 'Manager not found';
+--     END IF;
+--
+--     -- Получаем текущий статус заявки
+--     SELECT id, status_id INTO v_application_id, v_current_status_id
+--     FROM credit_applications WHERE application_number = p_application_number;
+--     IF NOT FOUND THEN
+--         RAISE EXCEPTION 'Application not found';
+--     END IF;
+--
+--     -- Определяем новый статус
+--     v_new_status_name := CASE WHEN p_is_approved THEN 'APPROVED' ELSE 'REJECTED' END;
+--     SELECT id INTO v_new_status_id FROM application_statuses WHERE status_name = v_new_status_name;
+--     IF NOT FOUND THEN
+--         RAISE EXCEPTION 'Status not found';
+--     END IF;
+--
+--     -- Обновляем заявку
+--     UPDATE credit_applications
+--     SET manager_id = v_manager_id,
+--         status_id = v_new_status_id,
+--         is_approved = p_is_approved
+--     WHERE id = v_application_id;
+--
+--     -- Если заявка одобрена, создаем кредит
+--     IF p_is_approved THEN
+--         v_contract_number := 'CON-' || EXTRACT(EPOCH FROM CURRENT_TIMESTAMP);
+--
+--         -- Получаем статус "Активный" для кредита
+--         SELECT id INTO v_credit_status_id FROM credit_statuses WHERE status_name = 'ACTIVE';
+--         IF NOT FOUND THEN
+--             RAISE EXCEPTION 'Credit status not found';
+--         END IF;
+--
+--         -- Создаем кредит
+--         INSERT INTO credits (contract_number, contract_date, application_id, status_id)
+--         VALUES (v_contract_number, CURRENT_DATE, v_application_id, v_credit_status_id);
+--     END IF;
+-- END;
+-- $$ LANGUAGE plpgsql;
+--
+-- -- Функция создания транзакции
+-- CREATE OR REPLACE FUNCTION create_transaction(
+--     p_contract_number VARCHAR,
+--     p_amount DECIMAL,
+--     p_transaction_type VARCHAR,
+--     p_description TEXT
+-- ) RETURNS VARCHAR AS $$
+-- DECLARE
+--     v_credit_id BIGINT;
+--     v_type_id BIGINT;
+--     v_desc_id BIGINT;
+--     v_transaction_number VARCHAR;
+-- BEGIN
+--     -- Получаем ID кредита
+--     SELECT id INTO v_credit_id FROM credits WHERE contract_number = p_contract_number;
+--     IF NOT FOUND THEN
+--         RAISE EXCEPTION 'Credit not found';
+--     END IF;
+--
+--     -- Получаем тип транзакции
+--     SELECT id INTO v_type_id FROM transaction_types WHERE type_name = p_transaction_type;
+--     IF NOT FOUND THEN
+--         RAISE EXCEPTION 'Transaction type not found';
+--     END IF;
+--
+--     -- Создаем описание транзакции
+--     INSERT INTO transaction_descriptions (transaction_type_id, description)
+--     VALUES (v_type_id, p_description)
+--     RETURNING id INTO v_desc_id;
+--
+--     -- Генерация номера транзакции
+--     v_transaction_number := 'TRX-' || EXTRACT(EPOCH FROM CURRENT_TIMESTAMP);
+--
+--     -- Создаем транзакцию
+--     INSERT INTO transactions (transaction_number, transaction_date, credit_id, amount, description_id)
+--     VALUES (v_transaction_number, CURRENT_TIMESTAMP, v_credit_id, p_amount, v_desc_id);
+--
+--     RETURN v_transaction_number;
+-- END;
+-- $$ LANGUAGE plpgsql;
+--
+-- -- Инициализация справочных данных
+-- -- INSERT INTO user_roles (id, role_name) VALUES
+-- --                                            (1, 'CLIENT'),
+-- --                                            (2, 'MANAGER'),
+-- --                                            (3, 'ADMINISTRATOR')
+-- -- ON CONFLICT (id) DO NOTHING;
+--
+-- INSERT INTO application_statuses (id, status_name) VALUES
+--                                                        (1, 'PENDING'),
+--                                                        (2, 'UNDER_REVIEW'),
+--                                                        (3, 'APPROVED'),
+--                                                        (4, 'REJECTED'),
+--                                                        (5, 'CANCELLED')
+-- ON CONFLICT (id) DO NOTHING;
+--
+-- INSERT INTO payment_types (id, type_name) VALUES
+--                                               (1, 'ANNUITY'),
+--                                               (2, 'DIFFERENTIATED')
+-- ON CONFLICT (id) DO NOTHING;
+--
+-- INSERT INTO credit_statuses (id, status_name) VALUES
+--                                                   (1, 'ACTIVE'),
+--                                                   (2, 'CLOSED'),
+--                                                   (3, 'OVERDUE'),
+--                                                   (4, 'DEFAULTED')
+-- ON CONFLICT (id) DO NOTHING;
+--
+-- INSERT INTO transaction_types (id, type_name) VALUES
+--                                                   (1, 'LOAN_DISBURSEMENT'),
+--                                                   (2, 'PRINCIPAL_PAYMENT'),
+--                                                   (3, 'INTEREST_PAYMENT'),
+--                                                   (4, 'PENALTY_PAYMENT'),
+--                                                   (5, 'EARLY_REPAYMENT')
+-- ON CONFLICT (id) DO NOTHING;
+--
+-- INSERT INTO credit_categories (id, category_name) VALUES
+--                                                       (1, 'MORTGAGE'),
+--                                                       (2, 'AUTO_LOAN'),
+--                                                       (3, 'CONSUMER_LOAN'),
+--                                                       (4, 'BUSINESS_LOAN')
+-- ON CONFLICT (id) DO NOTHING;
