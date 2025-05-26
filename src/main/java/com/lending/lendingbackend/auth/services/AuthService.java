@@ -10,6 +10,7 @@ import com.lending.lendingbackend.auth.services.parser.Credential;
 import com.lending.lendingbackend.data.entity.User;
 import com.lending.lendingbackend.dto.LoginDTO;
 import com.lending.lendingbackend.dto.RegistrationDTO;
+import com.lending.lendingbackend.service.ClientService;
 import com.lending.lendingbackend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.redisson.api.RBucket;
@@ -26,6 +27,7 @@ public class AuthService {
     public static final String COOKIE_HEADER_SESSION_ID_NAME = "CATSSESSIONID";
     private final BCryptPasswordEncoder passwordEncoder;
     private final UserService userService;
+    private final ClientService clientService;
     private final RedisSessionService redisSessionService;
 
     private static Credential authenticationHeaderParse(String authenticationHeader) {
@@ -33,8 +35,7 @@ public class AuthService {
     }
 
     public boolean signUp(RegistrationDTO registrationDTO) {
-        userService.createClientUserByRegistrationDTO(registrationDTO);
-
+        clientService.createClientByRegistrationDTO(registrationDTO);
         return true;
     }
 

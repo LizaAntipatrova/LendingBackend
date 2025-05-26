@@ -15,21 +15,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final ClientService clientService;
 
-    private User save(User user) {
-        return userRepository.save(user);
-    }
 
-    public User createClientUserByRegistrationDTO(RegistrationDTO registrationDTO) {
-
-        if (userRepository.findUserByLogin(registrationDTO.getLogin()) != null) {
-            throw new ExistingUserWithThatUsernameException();
-        }
-        User user = new User();
-        user.setLogin(registrationDTO.getLogin());
-        user.setPassword(registrationDTO.getPassword());
-        clientService.createClientByRegistrationDTO(user, registrationDTO);
-        return save(user);
-    }
 
 
     public User findUserById(long id) {
