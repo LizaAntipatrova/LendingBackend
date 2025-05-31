@@ -35,6 +35,7 @@ public class AuthService {
     }
 
     public boolean signUp(RegistrationDTO registrationDTO) {
+        registrationDTO.setPassword(passwordEncoder.encode(registrationDTO.getPassword()));
         clientService.createClientByRegistrationDTO(registrationDTO);
         return true;
     }

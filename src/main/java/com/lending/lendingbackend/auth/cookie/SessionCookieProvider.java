@@ -20,7 +20,7 @@ public class SessionCookieProvider {
         ResponseCookie cookie = ResponseCookie.from(AuthService.COOKIE_HEADER_SESSION_ID_NAME, sessionId)
                 .httpOnly(true)
                 .secure(false) // В development можно false, в production — true
-                .path("/teacher")
+                .path("/manager")
                 .maxAge(7 * 24 * 60 * 60)
                 .sameSite("Lax") // Или "None" + Secure=true для кросс-сайта
                 .build();

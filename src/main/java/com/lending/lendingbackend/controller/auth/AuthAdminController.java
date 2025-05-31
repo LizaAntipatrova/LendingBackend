@@ -1,8 +1,10 @@
 package com.lending.lendingbackend.controller.auth;
 
 
+import com.lending.lendingbackend.auth.cookie.SessionCookieProvider;
+import com.lending.lendingbackend.auth.services.AuthService;
+import com.lending.lendingbackend.auth.services.CustomResponse;
 import com.lending.lendingbackend.dto.LoginDTO;
-import com.lending.lendingbackend.service.ui.auth.AuthUIAdminService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -16,16 +18,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 @RequestMapping("/auth/admin")
 public class AuthAdminController {
-    private final AuthUIAdminService authUIService;
+    private final AuthService authService;
 
     @GetMapping("/sign-in")
     public String showSignInForm(Model model) {
-        return authUIService.getSignInForm(model);
+        model.addAttribute("loginDTO", new LoginDTO());
+        return "admin_login";
     }
 
     @PostMapping("/sign-in")
     public String signIn(@ModelAttribute("loginDTO") LoginDTO loginDTO, Model model, HttpServletResponse response) {
-        return authUIService.postSignIn(model, loginDTO, response);
+        CustomResponse authResponse = authService.signIn(loginDTO);
+        SessionCookieProvider.setUpAdminSessionCookie(response, authResponse.getCookieSessionId());
+        return "redirect:/admin/main";
     }
 
 }

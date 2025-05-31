@@ -1,21 +1,27 @@
-package com.lending.lendingbackend.service.ui.main;
+package com.lending.lendingbackend.controller.main;
 
 import com.lending.lendingbackend.dto.CreditProductDTO;
 import com.lending.lendingbackend.service.CreditProductService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
-@Service
+@Controller
 @RequiredArgsConstructor
-public class ProductCatalogUIService {
+@RequestMapping("/manager/main")
+public class ManagerMainPageController {
     private final CreditProductService creditProductService;
 
-    public String getCreditProductCatalog(Model model){
+    @GetMapping()
+    public String showMainPage(Model model) {
         List<CreditProductDTO> creditProductDTOS = creditProductService.getAllCreditProducts();
         model.addAttribute("productsList", creditProductDTOS);
-        return "credit_products_catalog";
+        return "manager_main";
     }
+
+
 }
