@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -25,6 +26,8 @@ public class Manager {
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "manager")
+    private List<CreditApplication> creditApplications;
     
     @ManyToMany
     @JoinTable(name = "manager_specializations",

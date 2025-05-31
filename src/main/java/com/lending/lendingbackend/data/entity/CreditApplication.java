@@ -36,8 +36,7 @@ public class CreditApplication {
 
     @Enumerated(EnumType.STRING)
     private ApplicationStatus status;
-    
-    private String decision;
+
 
     @Enumerated(EnumType.STRING)
     private PaymentType paymentType;
