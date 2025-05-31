@@ -18,11 +18,15 @@ public class CreditApplicationDTO {
 
 
     private String clientName;
-
+    private Long clientId;
 
     private String productName;
+    private Long productId;
 
     private String managerName;
+    private Long managerId;
+
+
     private Double interestRate;
     
     private LocalDateTime applicationDate;
