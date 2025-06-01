@@ -245,14 +245,12 @@
                     <tbody class="table-body">
                         <tr th:each="productDTO : ${productsList}" th:if="${!productsList.empty}">
                             <td th:text = "${productDTO.name}"></td>
-                            <td th:each=" ${productDTO.category}"></td>
+                            <td th:text=" ${productDTO.category}"></td>
                             <td th:text = "${productDTO.interestRate}"></td>
                             <td>
                                 <div class="table-button-open-credit-product">
                                     <!-- <form th:action="@{/teacher/main/credit-product"} method="get"> -->
-                                    <form th:data-id="@{productDTO.code}" method="get">
-                                        <button type="button">Открыть</button>
-                                    </form>
+                                    <button class="open-product" th:data-id="${productDTO.code}">Открыть</button>
                                 </div>
                             </td>
                         </tr>
@@ -266,4 +264,14 @@
 
     </div>
 </body>
+<script>
+    // Обработка кнопки "Открыть"
+    document.querySelectorAll('.open-product').forEach(btn => {
+        btn.addEventListener('click', function () {
+            const productId = this.getAttribute('data-id');
+            // Отправка ID заявки на сервер или переход на страницу заявки
+            window.location.href = 'product?id=' + productId;
+        });
+    });
+</script>
 </html>

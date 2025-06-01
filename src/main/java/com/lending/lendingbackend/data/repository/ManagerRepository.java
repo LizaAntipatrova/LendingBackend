@@ -12,4 +12,5 @@ import java.util.Set;
 public interface ManagerRepository extends JpaRepository<Manager, Long> {
     Manager findManagerByUser_Id(Long id);
     List<Manager> findAllBySpecializationsContains(CreditCategory creditCategory);
+    boolean existsByUser_IdAndSpecializationsContains(Long userId, CreditCategory creditCategory);
 }

@@ -12,6 +12,7 @@ public class CreditProductToCreditProductDTOConverter {
         creditProductDTO.setMinAmount(creditProduct.getMinAmount());
         creditProductDTO.setMaxAmount(creditProduct.getMaxAmount());
         creditProductDTO.setMinTerm(creditProduct.getMinTerm());
+        creditProductDTO.setMaxTerm(creditProduct.getMaxTerm());
         creditProductDTO.setMinDownPayment(creditProduct.getMinDownPayment());
         creditProductDTO.setDescription(creditProduct.getDescription());
         creditProductDTO.setCategory(creditProduct.getCategory().getText_name());

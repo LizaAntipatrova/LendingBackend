@@ -17,4 +17,5 @@ public class CreditCategory {
     private Long id;
     @NotBlank
     private String text_name;
+
 }

@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ManagerService {
     private final ManagerRepository managerRepository;
+    private final CreditCategoryService creditCategoryService;
 
     public Manager save(Manager teacher) {
         return managerRepository.save(teacher);
@@ -26,6 +27,11 @@ public class ManagerService {
 
     private Manager findManagerByUserId(Long id) {
         return managerRepository.findManagerByUser_Id(id);
+    }
+
+    public boolean existManagerSpecialization(Long managerUserId, Long productCode){
+        return managerRepository.existsByUser_IdAndSpecializationsContains(managerUserId, creditCategoryService.getCategoryByCreditProductCode(productCode));
+
     }
 
     public ManagerDTO getManagerDTOByUserId(Long userId) {

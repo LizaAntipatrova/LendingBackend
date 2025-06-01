@@ -1,6 +1,7 @@
 package com.lending.lendingbackend.service;
 
 
+import com.lending.lendingbackend.data.entity.CreditCategory;
 import com.lending.lendingbackend.data.repository.CreditApplicationRepository;
 import com.lending.lendingbackend.dto.CreditApplicationDTO;
 import lombok.RequiredArgsConstructor;
@@ -16,12 +17,13 @@ public class CreditApplicationService {
     private final ClientService clientService;
     private final ManagerService managerService;
     private final CreditProductService creditProductService;
+    private final CreditCategoryService creditCategoryService;
 
     public void createCreditApplication(CreditApplicationDTO creditApplicationDTO){
         Long managerId;
         if(creditApplicationDTO.getManagerId() == null) {
             managerId = getRandomElement(managerService.getAllManagerBySpecialization(
-                    creditProductService.getCategoryByCreditProductCode(creditApplicationDTO.getProductId()))).getEmployeeId();
+                    creditCategoryService.getCategoryByCreditProductCode(creditApplicationDTO.getProductId()))).getEmployeeId();
             creditApplicationDTO.setClientId(clientService.findClientByUserId(creditApplicationDTO.getClientId()).getAccountNumber());
         }else {
             managerId = managerService.getManagerIdByUserId(creditApplicationDTO.getManagerId());

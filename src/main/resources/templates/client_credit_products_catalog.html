@@ -216,57 +216,68 @@
     </style>
 </head>
 <body>
-    <!-- Фильтры Дата (С какого по какое), + Поиск (Название + Ключевые слова) --> <!-- Тут кнопочк с переходом на прфиль -->
-    <!-- Название НИР, Автор, Дата публикации, Руководитель(Препод) + Кнопочка для открытия -->
-    <div class="page-container">
-        <nav class="navigation-bar">
-            <div class="title">МикроБанк</div>
-            
-            <div class="nav-elem">
-                <form th:action="@{/auth/client/sign-in}" method="get">
-                    <button type="submit">Войти</button>
-                </form>
-                <form th:action="@{/auth/client/sign-up}" method="get">
-                    <button type="submit">Зарегистрироваться</button>
-                    <!-- <input type="hidden" th:field="*{id}" th:value=""> Тут обсудить--> 
-                </form>
-            </div>
+<!-- Фильтры Дата (С какого по какое), + Поиск (Название + Ключевые слова) -->
+<!-- Тут кнопочк с переходом на прфиль -->
+<!-- Название НИР, Автор, Дата публикации, Руководитель(Препод) + Кнопочка для открытия -->
+<div class="page-container">
+    <nav class="navigation-bar">
+        <div class="title">МикроБанк</div>
 
-        </nav>
-
-        <div class="products-group">
-            <div class="products-table">
-                <table>
-                    <thead class="table-head">
-                        <tr>
-                            <th>Название</th>
-                            <th>Категория кредитования</th>
-                            <th>Процентная ставка</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody class="table-body">
-                        <tr th:each="productDTO : ${productsList}" th:if="${!productsList.empty}">
-                            <td th:text = "${productDTO.name}"></td>
-                            <td th:each=" ${productDTO.category}"></td>
-                            <td th:text = "${productDTO.interestRate}"></td>
-                            <td>
-                                <div class="table-button-open-credit-product">
-                                    <!-- <form th:action="@{/teacher/main/credit-product"} method="get"> -->
-                                    <form th:data-id="@{productDTO.code}" method="get">
-                                        <button type="button">Открыть</button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr class="empty-row" th:if="${productsList.empty}">
-                            <td colspan="6">Нет данных для отображения</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+        <div class="nav-elem">
+            <form th:action="@{/auth/client/sign-in}" method="get">
+                <button type="submit">Войти</button>
+            </form>
+            <form th:action="@{/auth/client/sign-up}" method="get">
+                <button type="submit">Зарегистрироваться</button>
+                <!-- <input type="hidden" th:field="*{id}" th:value=""> Тут обсудить-->
+            </form>
         </div>
 
+    </nav>
+
+    <div class="products-group">
+        <div class="products-table">
+            <table>
+                <thead class="table-head">
+                <tr>
+                    <th>Название</th>
+                    <th>Категория кредитования</th>
+                    <th>Процентная ставка</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody class="table-body">
+                <tr th:each="productDTO : ${productsList}" th:if="${!productsList.empty}">
+                    <td th:text="${productDTO.name}"></td>
+                    <td th:text=" ${productDTO.category}"></td>
+                    <td th:text="${productDTO.interestRate}"></td>
+                    <td>
+                        <div class="table-button-open-credit-product">
+                            <!-- <form th:action="@{/teacher/main/credit-product"} method="get"> -->
+
+                            <button class="open-product" th:data-id="${productDTO.code}">Открыть</button>
+
+                        </div>
+                    </td>
+                </tr>
+                <tr class="empty-row" th:if="${productsList.empty}">
+                    <td colspan="6">Нет данных для отображения</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
+
+</div>
 </body>
+<script>
+    // Обработка кнопки "Открыть"
+    document.querySelectorAll('.open-product').forEach(btn => {
+        btn.addEventListener('click', function () {
+            const productId = this.getAttribute('data-id');
+            // Отправка ID заявки на сервер или переход на страницу заявки
+            window.location.href = 'product?id=' + productId;
+        });
+    });
+</script>
 </html>
