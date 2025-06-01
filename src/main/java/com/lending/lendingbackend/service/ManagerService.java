@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,9 +31,16 @@ public class ManagerService {
     public ManagerDTO getManagerDTOByUserId(Long userId) {
         return ManagerToManagerDTOConverter.convertManagerToManagerDTO(findManagerByUserId(userId));
     }
+    public Long getManagerIdByUserId(Long userId){
+        return findManagerByUserId(userId).getEmployeeId();
+    }
 
     public List<Manager> getAllManagerBySpecialization(CreditCategory creditCategory) {
         return managerRepository.findAllBySpecializationsContains(creditCategory);
+    }
+
+    public Set<CreditCategory> getCreditCategoriesByManagerUserId(Long userId){
+        return findManagerByUserId(userId).getSpecializations();
     }
 
     public List<CreditApplicationDTO> getManagersApplicationListDTOByUserId(Long userId){

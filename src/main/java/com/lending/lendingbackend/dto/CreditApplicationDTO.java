@@ -18,7 +18,7 @@ public class CreditApplicationDTO {
 
 
     private String clientName;
-    private Long clientUserId;
+    private Long clientId;
 
     private String productName;
     private Long productId;

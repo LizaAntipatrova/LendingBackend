@@ -276,19 +276,19 @@ body {
 </head>
 <body>
     <div class="page-container">
-        <form th:object="${createProjectDTO}" enctype="multipart/form-data">
+        <form th:object="${creditApplicationDTO}" enctype="multipart/form-data">
             <nav class="navigation-bar">
                 <div class="title">МикроБанк</div>
                 <div class="nav-elem">
-                    <button th:formaction="@{/client/main}" th:formmethod="get" type="submit">Главная</button>
+                    <button onclick="history.back()">Назад</button>
                 </div>
             </nav>
             <div class="load-container">
 
                 <div class="data-row">
                     <div>Кредитополучатель:</div>
-                    <select class="select-teacher"  id="authorName" required th:field="*{clientId}" >
-                        <option th:each="client : ${listClients}" th:value="${client.id}" th:text="${client.lastName + ' ' + client.firstName + ' ' + client.middleName}"></option>
+                    <select class="select-teacher"  id="clients" required th:field="*{clientId}" >
+                        <option th:each="client : ${listClients}" th:value="${client.accountNumber}" th:text="${client.lastName + ' ' + client.firstName + ' ' + client.middleName}"></option>
                     </select>
                 </div>
                 <div class="data-row">
@@ -322,7 +322,7 @@ body {
                     </select>
                 </div>
                 <div class="apply-button">
-                    <button th:formaction="@{/client/application/new}" th:formmethod="post"  type="submit">Оформить заявку</button>
+                    <button th:formaction="@{/manager/application/new}" th:formmethod="post"  type="submit">Оформить заявку</button>
                 </div>
 
             </div>

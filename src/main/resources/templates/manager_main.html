@@ -241,11 +241,12 @@
             <div class="nav-elem">
                 <form th:action="@{/manager/profile}" method="get">
                     <button type="submit">Личный кабинет</button>
-                    <form th:action="@{/manager/newapplication}" method="get">
-                        <button type="submit">Оформить заявку на кредит</button>
-                        <!-- <input type="hidden" th:field="*{id}" th:value=""> Тут обсудить-->
-                    </form>
                 </form>
+                <form th:action="@{/manager/application/new}" method="get">
+                    <button type="submit">Оформить заявку на кредит</button>
+                    <!-- <input type="hidden" th:field="*{id}" th:value=""> Тут обсудить-->
+                </form>
+
 
             </div>
 

@@ -21,10 +21,6 @@ public class ClientService {
 
     private final ClientRepository clientRepository;
 
-    public Client save(Client student) {
-        return clientRepository.save(student);
-    }
-
     public Client findClientByUserId(Long id) {
         return clientRepository.findClientByUser_Id(id);
     }
@@ -44,15 +40,18 @@ public class ClientService {
                 );
     }
 
-    public Client getClientByUserId(Long userId){
-        return  clientRepository.findClientByUser_Id(userId);
+    public List<ClientDTO> getAllClientDTOs(){
+        return clientRepository.findAll().stream()
+                .map(ClientToClientDTOConverter::convertClientToClientDTO)
+                .collect(Collectors.toList());
     }
 
+
     public ClientDTO getClientDTOByUserId(Long userId){
-        return ClientToClientDTOConverter.convertClientToClientDTO(getClientByUserId(userId));
+        return ClientToClientDTOConverter.convertClientToClientDTO(findClientByUserId(userId));
     }
     public List<CreditApplicationDTO> getClientsApplicationListDTOByUserId(Long userId){
-        return getClientByUserId(userId).getCreditApplications().stream()
+        return findClientByUserId(userId).getCreditApplications().stream()
                 .map(CreditApplicationToCreditApplicationDTOConverter::convertCreditApplicationToCreditApplicationDTO)
                 .collect(Collectors.toList());
     }
