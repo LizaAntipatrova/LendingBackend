@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface CreditRepository extends JpaRepository<Credit, Long> {
     List<Credit> findByApprovedApplication_Client_User_Id(Long clientUserId);
+    List<Credit> findByApprovedApplication_Manager_User_Id(Long managerId);
 }

@@ -210,10 +210,10 @@
         <div class="title">МикроБанк</div>
 
         <div class="nav-elem">
-            <form th:action="@{/client/profile/edit}" method="get">
+            <form th:action="@{/manager/profile/edit}" method="get">
                 <button type="submit">Редактировать профиль</button>
             </form>
-            <form th:action="@{/client/main}" method="get">
+            <form th:action="@{/manager/main}" method="get">
                 <button type="submit">Главная</button>
             </form>
         </div>
@@ -225,33 +225,21 @@
             <div class="name-container">
                 <div class="info-row">
                     <div>ФИО</div>
-                    <div th:text="${clientDTO.lastName + ' ' + clientDTO.firstName + ' ' + clientDTO.middleName}"></div>
+                    <div th:text="${managerDTO.lastName + ' ' + managerDTO.firstName + ' ' + managerDTO.middleName}"></div>
                 </div>
                 <div class="info-row">
                     <div>Табельный номер</div>
-                    <div th:text="${clientDTO.accountNumber}"></div>
+                    <div th:text="${managerDTO.employeeId}"></div>
                 </div>
             </div>
             <div class="profesion-container">
                 <div class="info-row">
-                    <div>Паспортные данные</div>
-                    <div th:text="${clientDTO.passportSeries} + ' ' +  ${clientDTO.passportNumber}"></div>
-                </div>
-                <div class="info-row">
-                    <div>Дата рождения</div>
-                    <div th:text="${clientDTO.birthDate}"></div>
-                </div>
-                <div class="info-row">
-                    <div>Адрес</div>
-                    <div th:text="${clientDTO.address}"></div>
-                </div>
-                <div class="info-row">
                     <div>Телефон</div>
-                    <div th:text="${clientDTO.phone}"></div>
+                    <div th:text="${managerDTO.phone}"></div>
                 </div>
                 <div class="info-row">
                     <div>Почта</div>
-                    <div th:text="${clientDTO.email}"></div>
+                    <div th:text="${managerDTO.email}"></div>
                 </div>
             </div>
         </div>

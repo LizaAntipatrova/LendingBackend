@@ -20,4 +20,10 @@ public class CreditService {
                 .collect(Collectors.toList());
     }
 
+    public List<CreditDTO> getManagersCreditListDTOByUserId(Long userId){
+        return creditRepository.findByApprovedApplication_Manager_User_Id(userId).stream()
+                .map(CreditToCreditDTOConverter::convertCreditToCreditDTO)
+                .collect(Collectors.toList());
+    }
+
 }
