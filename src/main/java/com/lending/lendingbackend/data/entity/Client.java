@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Check;
 
 import java.time.LocalDate;
+import java.util.List;
+
 @NamedStoredProcedureQuery(
         name = "add_client",
         procedureName = "add_client",
@@ -52,6 +54,9 @@ public class Client {
     @NotBlank
     private String phone;
     private String email;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "client")
+    private List<CreditApplication> creditApplications;
 
     @OneToOne
     @JoinColumn(name = "user_id")

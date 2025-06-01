@@ -251,9 +251,6 @@ databaseChangeLog:
                   name: status
                   type: varchar(50)
               - column:
-                  name: decision
-                  type: text
-              - column:
                   name: payment_type
                   type: varchar(50)
             addForeignKeyConstraint:
@@ -281,6 +278,7 @@ databaseChangeLog:
               - column:
                   name: contract_number
                   type: bigserial
+                  autoIncrement: true
                   constraints:
                     primaryKey: true
                     nullable: false

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Data
@@ -22,7 +23,7 @@ public class Transaction {
     @JoinColumn(name = "credit_id")
     private Credit credit;
     
-    private Double amount;
+    private BigDecimal amount;
 
     @Enumerated(EnumType.STRING)
     private TransactionType description;

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 
 
 @Data
@@ -17,12 +18,12 @@ public class CreditProduct {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long code;
     private String name;
-    private Double interestRate;
-    private Double minAmount;
-    private Double maxAmount;
+    private BigDecimal interestRate;
+    private BigDecimal minAmount;
+    private BigDecimal maxAmount;
     private Integer minTerm;
     private Integer maxTerm;
-    private Double minDownPayment;
+    private BigDecimal minDownPayment;
     private String description;
     
     @ManyToOne

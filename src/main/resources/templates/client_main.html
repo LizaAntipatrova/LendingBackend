@@ -226,7 +226,7 @@
                 <form th:action="@{/client/profile}" method="get">
                     <button type="submit">Личный кабинет</button>
                 </form>
-                <form th:action="@{/client/newapplication}" method="get">
+                <form th:action="@{/client/application/new}" method="get">
                     <button type="submit">Оформить заявку на кредит</button>
                     <!-- <input type="hidden" th:field="*{id}" th:value=""> Тут обсудить--> 
                 </form>
@@ -248,7 +248,7 @@
                     <tbody class="table-body">
                         <tr th:each="productDTO : ${productsList}" th:if="${!productsList.empty}">
                             <td th:text = "${productDTO.name}"></td>
-                            <td th:each=" ${productDTO.category}"></td>
+                            <td th:text="${productDTO.category}"></td>
                             <td th:text = "${productDTO.interestRate}"></td>
                             <td>
                                 <div class="table-button-open-credit-product">
