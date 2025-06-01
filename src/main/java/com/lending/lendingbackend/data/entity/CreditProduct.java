@@ -8,6 +8,21 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(
+                name = "CreditProduct.addCreditProduct",
+                procedureName = "add_credit_product",
+                parameters = {
+                        @StoredProcedureParameter(name = "p_name", type = String.class, mode = ParameterMode.IN),
+                        @StoredProcedureParameter(name = "p_interest_rate", type = BigDecimal.class, mode = ParameterMode.IN),
+                        @StoredProcedureParameter(name = "p_min_amount", type = BigDecimal.class, mode = ParameterMode.IN),
+                        @StoredProcedureParameter(name = "p_max_amount", type = BigDecimal.class, mode = ParameterMode.IN),
+                        @StoredProcedureParameter(name = "p_min_term", type = Integer.class, mode = ParameterMode.IN),
+                        @StoredProcedureParameter(name = "p_max_term", type = Integer.class, mode = ParameterMode.IN),
+                        @StoredProcedureParameter(name = "p_min_down_payment", type = BigDecimal.class, mode = ParameterMode.IN),
+                        @StoredProcedureParameter(name = "p_description", type = String.class, mode = ParameterMode.IN),
+                        @StoredProcedureParameter(name = "p_category_id", type = Long.class, mode = ParameterMode.IN)
+                }
+        ),
+        @NamedStoredProcedureQuery(
                 name = "CreditProduct.updateCreditProduct",
                 procedureName = "update_credit_product",
                 parameters = {

@@ -18,6 +18,18 @@ public interface CreditProductRepository extends JpaRepository<CreditProduct, Lo
     CreditProduct getCreditProductByCode(Long code);
     List<CreditProduct> getCreditProductsByCategoryIn(Set<CreditCategory> creditCategories);
 
+    @Procedure(procedureName = "add_credit_product")
+    void addCreditProduct(
+            @Param("p_name") String name,
+            @Param("p_interest_rate") BigDecimal interestRate,
+            @Param("p_min_amount") BigDecimal minAmount,
+            @Param("p_max_amount") BigDecimal maxAmount,
+            @Param("p_min_term") Integer minTerm,
+            @Param("p_max_term") Integer maxTerm,
+            @Param("p_min_down_payment") BigDecimal minDownPayment,
+            @Param("p_description") String description,
+            @Param("p_category_id") Long categoryId
+    );
     @Procedure(procedureName = "update_credit_product")
     void updateCreditProduct(
             @Param("p_code") Long code,

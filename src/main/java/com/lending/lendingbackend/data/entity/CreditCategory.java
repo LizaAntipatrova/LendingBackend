@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,5 +19,8 @@ public class CreditCategory {
     private Long id;
     @NotBlank
     private String text_name;
+
+    @ManyToMany(mappedBy = "specializations")
+    private List<Manager> managers;
 
 }

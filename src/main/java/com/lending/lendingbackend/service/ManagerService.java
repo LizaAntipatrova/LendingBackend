@@ -5,12 +5,15 @@ import com.lending.lendingbackend.data.entity.CreditCategory;
 import com.lending.lendingbackend.data.entity.Manager;
 import com.lending.lendingbackend.data.repository.ManagerRepository;
 import com.lending.lendingbackend.dto.CreditApplicationDTO;
+import com.lending.lendingbackend.dto.CreditCategoryDTO;
 import com.lending.lendingbackend.dto.ManagerDTO;
 import com.lending.lendingbackend.service.convertor.CreditApplicationToCreditApplicationDTOConverter;
+import com.lending.lendingbackend.service.convertor.CreditCategoryToCreditCategoryDTOConverter;
 import com.lending.lendingbackend.service.convertor.ManagerToManagerDTOConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -25,7 +28,7 @@ public class ManagerService {
         return managerRepository.save(teacher);
     }
 
-    private Manager findManagerByUserId(Long id) {
+    public Manager findManagerByUserId(Long id) {
         return managerRepository.findManagerByUser_Id(id);
     }
 
@@ -52,6 +55,14 @@ public class ManagerService {
     public List<CreditApplicationDTO> getManagersApplicationListDTOByUserId(Long userId){
         return findManagerByUserId(userId).getCreditApplications().stream()
                 .map(CreditApplicationToCreditApplicationDTOConverter::convertCreditApplicationToCreditApplicationDTO)
+                .collect(Collectors.toList());
+    }
+    private List<CreditCategory> getCategoryByManagerUserId(Long managerUserId) {
+        return new ArrayList<>(findManagerByUserId(managerUserId).getSpecializations());
+    }
+    public List<CreditCategoryDTO> getCategoryDTOByManagerUserId(Long managerUserId) {
+        return getCategoryByManagerUserId(managerUserId).stream()
+                .map(CreditCategoryToCreditCategoryDTOConverter::convertCreditCategoryToCreditCategoryDTO)
                 .collect(Collectors.toList());
     }
 

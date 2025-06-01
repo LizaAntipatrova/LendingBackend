@@ -38,6 +38,18 @@ public class CreditProductService {
                 .map(CreditProductToCreditProductDTOConverter::convertCreditProductToCreditProductDTO)
                 .collect(Collectors.toList());
     }
+    public void createCreditProductByCreditProductDTO(CreditProductDTO creditProductDTO){
+        creditProductRepository.addCreditProduct(creditProductDTO.getName(),
+                creditProductDTO.getInterestRate(),
+                creditProductDTO.getMinAmount(),
+                creditProductDTO.getMaxAmount(),
+                creditProductDTO.getMinTerm(),
+                creditProductDTO.getMaxTerm(),
+                creditProductDTO.getMinDownPayment(),
+                creditProductDTO.getDescription(),
+                creditProductDTO.getCategoryId()
+                );
+    }
 
     public void updateCreditProductByCreditProductDTO(CreditProductDTO creditProductDTO){
         CreditProduct creditProduct = creditProductRepository.getCreditProductByCode(creditProductDTO.getCode());
