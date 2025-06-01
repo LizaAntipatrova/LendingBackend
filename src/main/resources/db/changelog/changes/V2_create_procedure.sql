@@ -54,30 +54,26 @@ $$;
 
 CREATE OR REPLACE PROCEDURE update_credit_product(
     p_code BIGINT,
-    p_name VARCHAR,
     p_interest_rate NUMERIC,
     p_min_amount NUMERIC,
     p_max_amount NUMERIC,
     p_min_term INTEGER,
     p_max_term INTEGER,
     p_min_down_payment NUMERIC,
-    p_description TEXT,
-    p_category_id BIGINT
+    p_description TEXT
 )
     LANGUAGE plpgsql
 AS $$
 BEGIN
     UPDATE credit_products
     SET
-        name = p_name,
         interest_rate = p_interest_rate,
         min_amount = p_min_amount,
         max_amount = p_max_amount,
         min_term = p_min_term,
         max_term = p_max_term,
         min_down_payment = p_min_down_payment,
-        description = p_description,
-        category_id = p_category_id
+        description = p_description
     WHERE code = p_code;
 
     COMMIT;

@@ -31,8 +31,33 @@ public class ProductController {
         if(managerService.existManagerSpecialization(managerUserId, id)){
             return "product_management_look";
         }else{
-            return "product_look";
+            return "redirect:/main/product?id="+ id;
         }
+    }
+    @GetMapping("/manager/product/edit")
+    public String showManagerEditProductForm(Model model, @RequestParam("id") Long id, @RequestHeader("Cookie") String cookie) {
+        Long managerUserId = authService.getUserIdFromCookie(cookie);
+        CreditProductDTO creditProductDTO = creditProductService.getCreditProductDTOByCreditProductCode(id);
+        model.addAttribute("productDTO", creditProductDTO);
+        if(managerService.existManagerSpecialization(managerUserId, id)) {
+            return "product_edit";
+        }
+        return "redirect:/main/product?id="+ id;
+    }
+
+
+
+    @PostMapping("/manager/product/edit")
+    public String editManagerProduct(@ModelAttribute("productDTO") CreditProductDTO creditProductDTO, @RequestParam("id") Long id) {
+        creditProductDTO.setCode(id);
+        creditProductService.updateCreditProductByCreditProductDTO(creditProductDTO);
+        return "redirect:/manager/product?id="+id;
+    }
+
+    @PostMapping("/manager/product/delete")
+    public String deleteManagerProduct(@RequestParam("id") Long id) {
+        creditProductService.deleteCreditProductByProductCode(id);
+        return "redirect:/manager/main";
     }
 
 }

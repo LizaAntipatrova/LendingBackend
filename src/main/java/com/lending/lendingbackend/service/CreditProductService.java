@@ -39,5 +39,20 @@ public class CreditProductService {
                 .collect(Collectors.toList());
     }
 
+    public void updateCreditProductByCreditProductDTO(CreditProductDTO creditProductDTO){
+        CreditProduct creditProduct = creditProductRepository.getCreditProductByCode(creditProductDTO.getCode());
+        creditProductRepository.updateCreditProduct(creditProductDTO.getCode(),
+                creditProductDTO.getInterestRate()==null? creditProduct.getInterestRate() :creditProductDTO.getInterestRate(),
+                creditProductDTO.getMinAmount()==null? creditProduct.getMinAmount():creditProductDTO.getMinAmount(),
+                creditProductDTO.getMaxAmount()==null? creditProduct.getMaxAmount():creditProductDTO.getMaxAmount(),
+                creditProductDTO.getMinTerm()==null? creditProduct.getMinTerm():creditProductDTO.getMinTerm(),
+                creditProductDTO.getMaxTerm()==null? creditProduct.getMaxTerm():creditProductDTO.getMaxTerm(),
+                creditProductDTO.getMinDownPayment()==null? creditProduct.getMinDownPayment():creditProductDTO.getMinDownPayment(),
+                creditProductDTO.getDescription()==null? creditProduct.getDescription():creditProductDTO.getDescription());
+    }
+    public void deleteCreditProductByProductCode(Long code){
+        creditProductRepository.deleteCreditProduct(code);
+    }
+
 
 }
