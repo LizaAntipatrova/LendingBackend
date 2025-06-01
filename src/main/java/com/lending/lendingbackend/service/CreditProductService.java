@@ -1,5 +1,6 @@
 package com.lending.lendingbackend.service;
 
+import com.lending.lendingbackend.data.entity.CreditCategory;
 import com.lending.lendingbackend.data.repository.CreditProductRepository;
 import com.lending.lendingbackend.dto.CreditProductDTO;
 import com.lending.lendingbackend.service.convertor.CreditProductToCreditProductDTOConverter;
@@ -18,6 +19,9 @@ public class CreditProductService {
         return creditProductRepository.findAll().stream()
                 .map(CreditProductToCreditProductDTOConverter::convertCreditProductToCreditProductDTO)
                 .collect(Collectors.toList());
+    }
+    public CreditCategory getCategoryByCreditProductCode(Long code){
+        return creditProductRepository.getCreditProductByCode(code).getCategory();
     }
 
 }

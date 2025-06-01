@@ -1,11 +1,11 @@
 package com.lending.lendingbackend.dto;
 
 import com.lending.lendingbackend.data.entity.*;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
@@ -18,7 +18,7 @@ public class CreditApplicationDTO {
 
 
     private String clientName;
-    private Long clientId;
+    private Long clientUserId;
 
     private String productName;
     private Long productId;
@@ -27,11 +27,11 @@ public class CreditApplicationDTO {
     private Long managerId;
 
 
-    private Double interestRate;
+    private BigDecimal interestRate;
     
     private LocalDateTime applicationDate;
-    private Double downPayment;
-    private Double requestedAmount;
+    private BigDecimal downPayment;
+    private BigDecimal requestedAmount;
     private Integer term;
 
     private ApplicationStatus status;

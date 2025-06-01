@@ -5,7 +5,22 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+@NamedStoredProcedureQuery(
+        name = "add_credit_application",
+        procedureName = "add_credit_application",
+        parameters = {
+                @StoredProcedureParameter(name = "p_client_id", type = Long.class, mode = ParameterMode.IN),
+                @StoredProcedureParameter(name = "p_product_id", type = Long.class, mode = ParameterMode.IN),
+                @StoredProcedureParameter(name = "p_manager_id", type = Long.class, mode = ParameterMode.IN),
+                @StoredProcedureParameter(name = "p_down_payment", type = BigDecimal.class, mode = ParameterMode.IN),
+                @StoredProcedureParameter(name = "p_requested_amount", type = BigDecimal.class, mode = ParameterMode.IN),
+                @StoredProcedureParameter(name = "p_term", type = Integer.class, mode = ParameterMode.IN),
+                @StoredProcedureParameter(name = "p_payment_type", type = String.class, mode = ParameterMode.IN),
+                @StoredProcedureParameter(name = "p_application_id", type = Long.class, mode = ParameterMode.OUT)
+        }
+)
 
 @Data
 @NoArgsConstructor
@@ -30,8 +45,8 @@ public class CreditApplication {
     private Manager manager;
     
     private LocalDateTime applicationDate;
-    private Double downPayment;
-    private Double requestedAmount;
+    private BigDecimal downPayment;
+    private BigDecimal requestedAmount;
     private Integer term;
 
     @Enumerated(EnumType.STRING)

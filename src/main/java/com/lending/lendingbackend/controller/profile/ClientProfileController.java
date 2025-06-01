@@ -1,6 +1,7 @@
 package com.lending.lendingbackend.controller.profile;
 
 import com.lending.lendingbackend.auth.services.AuthService;
+import com.lending.lendingbackend.data.entity.ApplicationStatus;
 import com.lending.lendingbackend.data.entity.Credit;
 import com.lending.lendingbackend.data.entity.CreditApplication;
 import com.lending.lendingbackend.dto.ClientDTO;
@@ -36,6 +37,7 @@ public class ClientProfileController {
         model.addAttribute("clientDTO", clientDTO);
         model.addAttribute("creditList", credits);
         model.addAttribute("applicationList", creditApplications);
+        model.addAttribute("applicationStatusTitles", ApplicationStatus.getTypeTitles());
         return "client_profile";
     }
 

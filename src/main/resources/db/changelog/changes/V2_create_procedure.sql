@@ -313,6 +313,7 @@ $$;
 CREATE OR REPLACE PROCEDURE add_credit_application(
     p_client_id BIGINT,
     p_product_id BIGINT,
+    p_manager_id BIGINT,
     p_down_payment NUMERIC,
     p_requested_amount NUMERIC,
     p_term INTEGER,
@@ -325,6 +326,7 @@ BEGIN
     INSERT INTO applications (
         client_id,
         product_id,
+        manager_id,
         application_date,
         down_payment,
         requested_amount,
@@ -335,6 +337,7 @@ BEGIN
     VALUES (
                p_client_id,
                p_product_id,
+               p_manager_id,
                NOW(),
                p_down_payment,
                p_requested_amount,

@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CreditProductRepository extends JpaRepository<CreditProduct, Long> {
-
+    CreditProduct getCreditProductByCode(Long code);
 }

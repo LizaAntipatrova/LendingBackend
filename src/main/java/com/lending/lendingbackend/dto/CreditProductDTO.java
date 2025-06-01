@@ -7,18 +7,20 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreditProductDTO {
     private Long code;
     private String name;
-    private Double interestRate;
-    private Double minAmount;
-    private Double maxAmount;
+    private BigDecimal interestRate;
+    private BigDecimal minAmount;
+    private BigDecimal maxAmount;
     private Integer minTerm;
     private Integer maxTerm;
-    private Double minDownPayment;
+    private BigDecimal minDownPayment;
     private String description;
     private String category;
 }

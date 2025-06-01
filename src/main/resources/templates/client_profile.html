@@ -279,8 +279,8 @@
                         <td th:text = "${applicationDTO.productName}"></td>
                         <td th:text = "${applicationDTO.term}"></td>
                         <td th:text = "${applicationDTO.requestedAmount}"></td>
-                        <td th:text = "${applicationDTO.applicationDate}"></td>
-                        <td th:text = "${applicationDTO.status}"></td>
+                        <td th:text="${#temporals.format(applicationDTO.applicationDate, 'dd.MM.yyyy HH:mm')}"></td>
+                        <td th:text="${applicationStatusTitles.get(applicationDTO.status?.name())}"></td>
                         <td>
                             <div class="table-button-open-nir">
                                 <!-- <form th:action="@{/teacher/main/nir}" method="get"> -->

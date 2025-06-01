@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -27,9 +28,9 @@ public class CreditDTO {
     private String managerName;
 
     private LocalDateTime applicationDate;
-    private Double interestRate;
-    private Double downPayment;
-    private Double requestedAmount;
+    private BigDecimal interestRate;
+    private BigDecimal downPayment;
+    private BigDecimal requestedAmount;
     private Integer term;
 
     private PaymentType paymentType;

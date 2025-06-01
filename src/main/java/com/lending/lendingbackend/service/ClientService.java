@@ -44,7 +44,7 @@ public class ClientService {
                 );
     }
 
-    private Client getClientByUserId(Long userId){
+    public Client getClientByUserId(Long userId){
         return  clientRepository.findClientByUser_Id(userId);
     }
 
