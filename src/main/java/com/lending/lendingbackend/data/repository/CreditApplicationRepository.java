@@ -20,4 +20,9 @@ public interface CreditApplicationRepository extends JpaRepository<CreditApplica
             @Param("p_requested_amount") BigDecimal requestedAmount,
             @Param("p_term") Integer term,
             @Param("p_payment_type") String paymentType);
+
+    @Procedure(name = "update_application_status")
+    void updateApplicationStatus(
+            @Param("p_application_id") Long applicationId,
+            @Param("p_status") String status);
 }

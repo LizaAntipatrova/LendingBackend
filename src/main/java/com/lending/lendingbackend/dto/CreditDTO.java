@@ -1,5 +1,6 @@
 package com.lending.lendingbackend.dto;
 
+import com.lending.lendingbackend.data.entity.ApplicationStatus;
 import com.lending.lendingbackend.data.entity.CreditApplication;
 import com.lending.lendingbackend.data.entity.CreditStatus;
 import com.lending.lendingbackend.data.entity.PaymentType;
@@ -18,21 +19,33 @@ import java.time.LocalDateTime;
 
 public class CreditDTO {
 
-    private String contractNumber;
+    private Long contractNumber;
     private LocalDate contractDate;
-    private String clientName;
+    private CreditStatus status;
 
+    private String clientName;
+    private String clientPassportSeries;
+    private String clientPassportNumber;
+    private LocalDate clientBirthDate;
+    private String clientAddress;
+    private String clientPhone;
+    private String clientEmail;
+    private Long clientId;
 
     private String productName;
+    private BigDecimal interestRate;
+
+    private Long productId;
 
     private String managerName;
+    private String managerPhone;
+    private String managerEmail;
+    private Long managerId;
 
-    private LocalDateTime applicationDate;
-    private BigDecimal interestRate;
     private BigDecimal downPayment;
     private BigDecimal requestedAmount;
     private Integer term;
 
     private PaymentType paymentType;
-    private CreditStatus status;
+
 }

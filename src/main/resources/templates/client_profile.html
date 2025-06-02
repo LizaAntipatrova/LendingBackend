@@ -316,7 +316,7 @@
                         <td>
                             <div class="table-button-open-nir">
                                 <!-- <form th:action="@{/teacher/main/nir}" method="get"> -->
-                                <button class="open-nir" th:data-id="${creditDTO.id}">Открыть</button>
+                                <button class="open-credit" th:data-id="${creditDTO.contractNumber}">Открыть</button>
                             </div>
                         </td>
                     </tr>
@@ -338,6 +338,13 @@
             const applicationId = this.getAttribute('data-id');
             // Отправка ID заявки на сервер или переход на страницу заявки
             window.location.href = '/client/application?id=' + applicationId;
+        });
+    });
+    document.querySelectorAll('.open-credit').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const applicationId = this.getAttribute('data-id');
+            // Отправка ID заявки на сервер или переход на страницу заявки
+            window.location.href = '/client/credit?id=' + applicationId;
         });
     });
 </script>

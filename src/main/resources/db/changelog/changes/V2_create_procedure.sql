@@ -349,18 +349,14 @@ $$;
 
 CREATE OR REPLACE PROCEDURE update_application_status(
     p_application_id BIGINT,
-    p_manager_id BIGINT,
-    p_status VARCHAR,
-    p_decision VARCHAR
+    p_status VARCHAR
 )
     LANGUAGE plpgsql
 AS $$
 BEGIN
     UPDATE applications
     SET
-        manager_id = p_manager_id,
-        status = p_status,
-        decision = p_decision
+        status = p_status
     WHERE id = p_application_id;
 
     COMMIT;

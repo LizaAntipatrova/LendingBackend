@@ -271,7 +271,7 @@
                         <td>
                             <div class="table-button-open-nir">
                                 <!-- <form th:action="@{/teacher/main/nir}" method="get"> -->
-                                <button class="open-nir" th:data-id="${applicationDTO.id}">Открыть</button>
+                                <button class="open-application" th:data-id="${applicationDTO.id}">Открыть</button>
                             </div>
                         </td>
                     </tr>
@@ -304,7 +304,7 @@
                         <td>
                             <div class="table-button-open-nir">
                                 <!-- <form th:action="@{/teacher/main/nir}" method="get"> -->
-                                <button class="open-nir" th:data-id="${creditDTO.id}">Открыть</button>
+                                <button class="open-credit" th:data-id="${creditDTO.contractNumber}">Открыть</button>
                             </div>
                         </td>
                     </tr>
@@ -319,11 +319,18 @@
 </div>
 <script>
     // Обработка кнопки "Открыть"
-    document.querySelectorAll('.open-nir').forEach(btn => {
+    document.querySelectorAll('.open-application').forEach(btn => {
         btn.addEventListener('click', function() {
-            const nirId = this.getAttribute('data-id');
+            const applicationId = this.getAttribute('data-id');
             // Отправка ID заявки на сервер или переход на страницу заявки
-            window.location.href = 'nir?id=' + nirId;
+            window.location.href = '/manager/application?id=' + applicationId;
+        });
+    });
+    document.querySelectorAll('.open-credit').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const creditId = this.getAttribute('data-id');
+            // Отправка ID заявки на сервер или переход на страницу заявки
+            window.location.href = '/manager/credit?id=' + creditId;
         });
     });
 </script>

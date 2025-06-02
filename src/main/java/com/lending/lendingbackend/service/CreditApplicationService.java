@@ -1,7 +1,7 @@
 package com.lending.lendingbackend.service;
 
 
-import com.lending.lendingbackend.data.entity.CreditCategory;
+import com.lending.lendingbackend.data.entity.ApplicationStatus;
 import com.lending.lendingbackend.data.repository.CreditApplicationRepository;
 import com.lending.lendingbackend.dto.CreditApplicationDTO;
 import com.lending.lendingbackend.service.convertor.CreditApplicationToCreditApplicationDTOConverter;
@@ -19,19 +19,35 @@ public class CreditApplicationService {
     private final ManagerService managerService;
     private final CreditProductService creditProductService;
     private final CreditCategoryService creditCategoryService;
+    private final CreditService creditService;
 
-    public CreditApplicationDTO getCreditApplicationDTOByApplicationId(Long id){
+    public CreditApplicationDTO getCreditApplicationDTOByApplicationId(Long id) {
         return CreditApplicationToCreditApplicationDTOConverter
                 .convertCreditApplicationToCreditApplicationDTO(
                         creditApplicationRepository.findCreditApplicationById(id));
     }
-    public void createCreditApplication(CreditApplicationDTO creditApplicationDTO){
+
+    public void approvedApplication(Long id) {
+
+        creditApplicationRepository.updateApplicationStatus(
+                id,
+                ApplicationStatus.APPROVED.toString());
+        creditService.createNewCredit(id);
+    }
+    public void rejectedApplication(Long id) {
+
+        creditApplicationRepository.updateApplicationStatus(
+                id,
+                ApplicationStatus.REJECTED.toString());
+    }
+
+    public void createCreditApplication(CreditApplicationDTO creditApplicationDTO) {
         Long managerId;
-        if(creditApplicationDTO.getManagerId() == null) {
+        if (creditApplicationDTO.getManagerId() == null) {
             managerId = getRandomElement(managerService.getAllManagerBySpecialization(
                     creditCategoryService.getCategoryByCreditProductCode(creditApplicationDTO.getProductId()))).getEmployeeId();
             creditApplicationDTO.setClientId(clientService.findClientByUserId(creditApplicationDTO.getClientId()).getAccountNumber());
-        }else {
+        } else {
             managerId = managerService.getManagerIdByUserId(creditApplicationDTO.getManagerId());
         }
 
@@ -43,6 +59,7 @@ public class CreditApplicationService {
                 creditApplicationDTO.getTerm(),
                 creditApplicationDTO.getPaymentType().toString());
     }
+
     private static <T> T getRandomElement(List<T> list) {
         int randomIndex = ThreadLocalRandom.current().nextInt(list.size());
         return list.get(randomIndex);

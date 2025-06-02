@@ -1,6 +1,7 @@
 package com.lending.lendingbackend.controller.application;
 
 import com.lending.lendingbackend.auth.services.AuthService;
+import com.lending.lendingbackend.data.entity.ApplicationStatus;
 import com.lending.lendingbackend.data.entity.PaymentType;
 import com.lending.lendingbackend.dto.ClientDTO;
 import com.lending.lendingbackend.dto.CreditApplicationDTO;
@@ -42,5 +43,27 @@ public class ManagerApplicationController {
         creditApplicationDTO.setManagerId(userId);
         creditApplicationService.createCreditApplication(creditApplicationDTO);
         return "redirect:/manager/main";
+    }
+    @GetMapping()
+    public String showApplicationPage(Model model, @RequestParam("id") Long id) {
+        CreditApplicationDTO creditApplicationDTO = creditApplicationService.getCreditApplicationDTOByApplicationId(id);
+        model.addAttribute("applicationStatusList", ApplicationStatus.getStatusTitles());
+        model.addAttribute("paymentTypeList", PaymentType.getTypeTitles());
+        model.addAttribute("creditApplicationDTO", creditApplicationDTO);
+        if(creditApplicationDTO.getStatus().equals(ApplicationStatus.IN_PROGRESS)){
+            return "manager_application_look";
+        }
+        return "application_look";
+    }
+
+    @PostMapping("/approved")
+    public String approvedApplication(@RequestParam("id") Long id) {
+        creditApplicationService.approvedApplication(id);
+        return "redirect:/manager/application?id=" + id;
+    }
+    @PostMapping("/rejected")
+    public String rejectedApplication(@RequestParam("id") Long id) {
+        creditApplicationService.rejectedApplication(id);
+        return "redirect:/manager/application?id=" + id;
     }
 }

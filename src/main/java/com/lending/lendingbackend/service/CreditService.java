@@ -1,5 +1,6 @@
 package com.lending.lendingbackend.service;
 
+import com.lending.lendingbackend.data.entity.CreditStatus;
 import com.lending.lendingbackend.data.repository.CreditRepository;
 import com.lending.lendingbackend.dto.CreditDTO;
 import com.lending.lendingbackend.service.convertor.CreditToCreditDTOConverter;
@@ -26,4 +27,15 @@ public class CreditService {
                 .collect(Collectors.toList());
     }
 
+    public CreditDTO getCreditByContractNumber(Long contractNumber){
+        return CreditToCreditDTOConverter.convertCreditToCreditDTO(creditRepository.findCreditByContractNumber(contractNumber));
+    }
+
+    public void createNewCredit(Long applicationId){
+        creditRepository.addCredit(applicationId, CreditStatus.AWAITING_CONFIRMATION.toString());
+    }
+
+    public void updateCreditStatusToActive(Long contractNumber){
+        creditRepository.updateCreditStatus(contractNumber, CreditStatus.ACTIVE.toString());
+    }
 }
