@@ -16,7 +16,7 @@ public enum ApplicationStatus {
         STATUS_TITLES.put("APPROVED", "Одобрена");
     }
 
-    public static Map<String, String> getTypeTitles() {
+    public static Map<String, String> getStatusTitles() {
         return STATUS_TITLES;
     }
 }

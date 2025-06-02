@@ -9,6 +9,8 @@ import org.springframework.data.repository.query.Param;
 import java.math.BigDecimal;
 
 public interface CreditApplicationRepository extends JpaRepository<CreditApplication, Long> {
+    CreditApplication findCreditApplicationById(Long id);
+
     @Procedure(name = "add_credit_application")
     Long addCreditApplication(
             @Param("p_client_id") Long clientId,

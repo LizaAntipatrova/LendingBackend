@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -18,24 +19,32 @@ public class CreditApplicationDTO {
 
 
     private String clientName;
+    private String clientPassportSeries;
+    private String clientPassportNumber;
+    private LocalDate clientBirthDate;
+    private String clientAddress;
+    private String clientPhone;
+    private String clientEmail;
     private Long clientId;
 
     private String productName;
+    private BigDecimal interestRate;
+
     private Long productId;
 
     private String managerName;
+    private String managerPhone;
+    private String managerEmail;
     private Long managerId;
 
 
-    private BigDecimal interestRate;
+
     
     private LocalDateTime applicationDate;
     private BigDecimal downPayment;
     private BigDecimal requestedAmount;
     private Integer term;
-
     private ApplicationStatus status;
-
 
     private PaymentType paymentType;
 }

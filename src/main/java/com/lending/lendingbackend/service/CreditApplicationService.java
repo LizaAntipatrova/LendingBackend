@@ -4,6 +4,7 @@ package com.lending.lendingbackend.service;
 import com.lending.lendingbackend.data.entity.CreditCategory;
 import com.lending.lendingbackend.data.repository.CreditApplicationRepository;
 import com.lending.lendingbackend.dto.CreditApplicationDTO;
+import com.lending.lendingbackend.service.convertor.CreditApplicationToCreditApplicationDTOConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,11 @@ public class CreditApplicationService {
     private final CreditProductService creditProductService;
     private final CreditCategoryService creditCategoryService;
 
+    public CreditApplicationDTO getCreditApplicationDTOByApplicationId(Long id){
+        return CreditApplicationToCreditApplicationDTOConverter
+                .convertCreditApplicationToCreditApplicationDTO(
+                        creditApplicationRepository.findCreditApplicationById(id));
+    }
     public void createCreditApplication(CreditApplicationDTO creditApplicationDTO){
         Long managerId;
         if(creditApplicationDTO.getManagerId() == null) {

@@ -1,6 +1,7 @@
 package com.lending.lendingbackend.controller.application;
 
 import com.lending.lendingbackend.auth.services.AuthService;
+import com.lending.lendingbackend.data.entity.ApplicationStatus;
 import com.lending.lendingbackend.data.entity.PaymentType;
 import com.lending.lendingbackend.dto.CreditApplicationDTO;
 import com.lending.lendingbackend.dto.CreditProductDTO;
@@ -36,5 +37,14 @@ public class ClientApplicationController {
         creditApplicationDTO.setClientId(userId);
         creditApplicationService.createCreditApplication(creditApplicationDTO);
         return "redirect:/client/main";
+    }
+
+    @GetMapping()
+    public String showApplicationPage(Model model, @RequestParam("id") Long id) {
+        CreditApplicationDTO creditApplicationDTO = creditApplicationService.getCreditApplicationDTOByApplicationId(id);
+        model.addAttribute("applicationStatusList", ApplicationStatus.getStatusTitles());
+        model.addAttribute("paymentTypeList", PaymentType.getTypeTitles());
+        model.addAttribute("creditApplicationDTO", creditApplicationDTO);
+        return "application_look";
     }
 }

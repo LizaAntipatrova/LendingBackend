@@ -2,14 +2,10 @@ package com.lending.lendingbackend.controller.profile;
 
 import com.lending.lendingbackend.auth.services.AuthService;
 import com.lending.lendingbackend.data.entity.ApplicationStatus;
-import com.lending.lendingbackend.data.entity.Credit;
-import com.lending.lendingbackend.data.entity.CreditApplication;
 import com.lending.lendingbackend.dto.ClientDTO;
 import com.lending.lendingbackend.dto.CreditApplicationDTO;
 import com.lending.lendingbackend.dto.CreditDTO;
-import com.lending.lendingbackend.dto.CreditProductDTO;
 import com.lending.lendingbackend.service.ClientService;
-import com.lending.lendingbackend.service.CreditProductService;
 import com.lending.lendingbackend.service.CreditService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -37,7 +33,7 @@ public class ClientProfileController {
         model.addAttribute("clientDTO", clientDTO);
         model.addAttribute("creditList", credits);
         model.addAttribute("applicationList", creditApplications);
-        model.addAttribute("applicationStatusTitles", ApplicationStatus.getTypeTitles());
+        model.addAttribute("applicationStatusTitles", ApplicationStatus.getStatusTitles());
         return "client_profile";
     }
 
