@@ -39,7 +39,7 @@ public class CreditController {
 
     @PostMapping("/manager/credit/confirm")
     public String confirmCredit(@RequestParam("id") Long id) {
-        creditService.updateCreditStatusToActive(id);
+        creditService.confirmCredit(id);
         return "redirect:/manager/credit?id=" + id;
     }
 

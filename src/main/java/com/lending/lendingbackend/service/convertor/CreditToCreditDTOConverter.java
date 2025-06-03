@@ -23,6 +23,7 @@ public class CreditToCreditDTOConverter {
         creditDTO.setClientAddress(client.getAddress());
         creditDTO.setClientPhone(client.getPhone());
         creditDTO.setClientEmail(client.getEmail());
+        creditDTO.setCurrentAmount(credit.getCurrentAmount());
 
         creditDTO.setContractDate(credit.getContractDate());
         creditDTO.setInterestRate(creditApplication.getProduct().getInterestRate());

@@ -289,6 +289,9 @@ databaseChangeLog:
                   name: application_id
                   type: bigint
               - column:
+                  name: current_amount
+                  type: numeric(19,2)
+              - column:
                   name: status
                   type: varchar(50)
             addForeignKeyConstraint:
@@ -315,7 +318,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: transaction_date
-                  type: date
+                  type: timestamp
               - column:
                   name: amount
                   type: numeric(19,2)

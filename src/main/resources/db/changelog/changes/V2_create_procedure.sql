@@ -369,9 +369,17 @@ CREATE OR REPLACE PROCEDURE add_credit(
 )
     LANGUAGE plpgsql
 AS $$
+DECLARE
+    v_application_amount NUMERIC(19,2);
 BEGIN
-    INSERT INTO credits (contract_date, application_id, status)
-    VALUES (NOW(), p_application_id, p_status);
+    -- Get the requested amount from the application
+    SELECT requested_amount INTO v_application_amount
+    FROM applications
+    WHERE id = p_application_id;
+
+    -- Insert the credit record
+    INSERT INTO credits (contract_date, current_amount, application_id, status)
+    VALUES (NOW(), v_application_amount, p_application_id, p_status);
 
     COMMIT;
 END;

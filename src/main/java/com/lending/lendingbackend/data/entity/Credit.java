@@ -5,7 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
+
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(
                 name = "Credit.addCredit",
@@ -35,6 +38,7 @@ public class Credit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long contractNumber;
     private LocalDate contractDate;
+    private BigDecimal currentAmount;
     
     @OneToOne
     @JoinColumn(name = "application_id")
@@ -42,4 +46,7 @@ public class Credit {
     
     @Enumerated(EnumType.STRING)
     private CreditStatus status;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "credit")
+    private List<Transaction> transactions;
 }

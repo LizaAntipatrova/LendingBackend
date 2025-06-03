@@ -22,6 +22,7 @@ public class CreditDTO {
     private Long contractNumber;
     private LocalDate contractDate;
     private CreditStatus status;
+    private BigDecimal currentAmount;
 
     private String clientName;
     private String clientPassportSeries;
