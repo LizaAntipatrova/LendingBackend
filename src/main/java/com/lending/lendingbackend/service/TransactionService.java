@@ -23,7 +23,7 @@ public class TransactionService {
     private final CreditService creditService;
 
     @Transactional
-    @Scheduled(cron = "0 55 15 3 * ?")  // 1-е число каждого месяца в полночь
+    @Scheduled(cron = "0 0 0 1 * ?")  // 1-е число каждого месяца в полночь
     public void chargeInterest() {
         log.info("Запуск chargeInterest() в {}", LocalDateTime.now());
         creditService.getAllCredits().stream()
