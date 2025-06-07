@@ -1,10 +1,8 @@
 package com.lending.lendingbackend.service;
 
-import com.lending.lendingbackend.auth.exceptions.data.ExistingUserWithThatUsernameException;
-import com.lending.lendingbackend.auth.exceptions.data.UserNotFoundException;
+import com.lending.lendingbackend.exceptions.data.UserNotFoundException;
 import com.lending.lendingbackend.data.entity.User;
 import com.lending.lendingbackend.data.repository.UserRepository;
-import com.lending.lendingbackend.dto.RegistrationDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

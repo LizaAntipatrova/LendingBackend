@@ -2,12 +2,13 @@ package com.lending.lendingbackend.advice;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.lending.lendingbackend.auth.exceptions.auth.DecodeCredentialsException;
-import com.lending.lendingbackend.auth.exceptions.auth.InvalidBasicAuthorizationHeaderException;
-import com.lending.lendingbackend.auth.exceptions.auth.InvalidCookieException;
-import com.lending.lendingbackend.auth.exceptions.data.ExistingUserWithThatUsernameException;
-import com.lending.lendingbackend.auth.exceptions.data.UnregisteredUserException;
-import com.lending.lendingbackend.auth.exceptions.data.UserNotFoundException;
+import com.itextpdf.text.DocumentException;
+import com.lending.lendingbackend.exceptions.auth.DecodeCredentialsException;
+import com.lending.lendingbackend.exceptions.auth.InvalidBasicAuthorizationHeaderException;
+import com.lending.lendingbackend.exceptions.auth.InvalidCookieException;
+import com.lending.lendingbackend.exceptions.data.ExistingUserWithThatUsernameException;
+import com.lending.lendingbackend.exceptions.data.UnregisteredUserException;
+import com.lending.lendingbackend.exceptions.data.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -153,6 +154,18 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler(DocumentException.class)
+    public ResponseEntity<CustomErrorResponse> handleDocumentException(Exception ex, WebRequest request) {
+        CustomErrorResponse errorResponse = new CustomErrorResponse();
+        errorResponse.setTimestamp(LocalDateTime.now());
+        errorResponse.setStatus(HttpStatus.BAD_REQUEST.value());
+        errorResponse.setError("Ошибка генерации файла");
+        errorResponse.setMessage(ex.getMessage());
+        errorResponse.setPath(request.getDescription(false));
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
 
 
 }

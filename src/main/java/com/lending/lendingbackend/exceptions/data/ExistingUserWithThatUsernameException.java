@@ -1,4 +1,4 @@
-package com.lending.lendingbackend.auth.exceptions.data;
+package com.lending.lendingbackend.exceptions.data;
 
 public class ExistingUserWithThatUsernameException extends RuntimeException {
     public ExistingUserWithThatUsernameException() {

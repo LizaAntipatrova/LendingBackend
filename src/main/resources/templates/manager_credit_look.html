@@ -247,6 +247,12 @@
               Подтвердить
             </button>
           </div>
+          <div class="nav-elem">
+            <button type="submit" class="btn-reject"
+                    th:formaction="@{/credit/contract?id={id}(id=${creditDTO.contractNumber})}" formmethod="post">
+              Скачать кредитный договор
+            </button>
+          </div>
         </div>
       </div>
 

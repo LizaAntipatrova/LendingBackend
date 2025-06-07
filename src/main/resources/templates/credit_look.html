@@ -244,6 +244,18 @@
             </div>
           </div>
         </div>
+        <div class="nav-elem">
+          <button type="submit" class="btn-reject"
+                  th:formaction="@{/credit/transactions?id={id}(id=${creditDTO.contractNumber})}" formmethod="post">
+            Скачать выписку по кредиту
+          </button>
+        </div>
+        <div class="nav-elem">
+          <button type="submit" class="btn-reject"
+                  th:formaction="@{/credit/contract?id={id}(id=${creditDTO.contractNumber})}" formmethod="post">
+            Скачать кредитный договор
+          </button>
+        </div>
       </div>
 
       <div class="product-lists-container">

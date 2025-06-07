@@ -1,4 +1,4 @@
-package com.lending.lendingbackend.auth.exceptions.auth;
+package com.lending.lendingbackend.exceptions.auth;
 
 public class DecodeCredentialsException extends RuntimeException {
     public DecodeCredentialsException() {

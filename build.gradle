@@ -40,6 +40,9 @@ dependencies {
 
     runtimeOnly("org.postgresql:postgresql")
 
+    // https://mvnrepository.com/artifact/com.itextpdf/itextpdf
+    implementation 'com.itextpdf:itextpdf:5.5.13.3'
+
     // Lombok
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")

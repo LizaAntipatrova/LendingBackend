@@ -1,4 +1,4 @@
-package com.lending.lendingbackend.auth.exceptions.auth;
+package com.lending.lendingbackend.exceptions.auth;
 
 public class InvalidBasicAuthorizationHeaderException extends RuntimeException {
     public InvalidBasicAuthorizationHeaderException() {

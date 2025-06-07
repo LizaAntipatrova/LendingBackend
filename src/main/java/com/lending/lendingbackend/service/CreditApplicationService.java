@@ -2,6 +2,7 @@ package com.lending.lendingbackend.service;
 
 
 import com.lending.lendingbackend.data.entity.ApplicationStatus;
+import com.lending.lendingbackend.data.entity.CreditProduct;
 import com.lending.lendingbackend.data.repository.CreditApplicationRepository;
 import com.lending.lendingbackend.dto.CreditApplicationDTO;
 import com.lending.lendingbackend.service.convertor.CreditApplicationToCreditApplicationDTOConverter;
@@ -50,14 +51,24 @@ public class CreditApplicationService {
         } else {
             managerId = managerService.getManagerIdByUserId(creditApplicationDTO.getManagerId());
         }
-
-        creditApplicationRepository.addCreditApplication(creditApplicationDTO.getClientId(),
+        Long creditApplicationId = creditApplicationRepository.addCreditApplication(creditApplicationDTO.getClientId(),
                 creditApplicationDTO.getProductId(),
                 managerId,
                 creditApplicationDTO.getDownPayment(),
                 creditApplicationDTO.getRequestedAmount(),
                 creditApplicationDTO.getTerm(),
                 creditApplicationDTO.getPaymentType().toString());
+        CreditProduct creditProduct = creditProductService.getCreditProductByCode(creditApplicationDTO.getProductId());
+        if (creditApplicationDTO.getRequestedAmount().doubleValue() < creditProduct.getMinAmount().doubleValue()
+                || creditApplicationDTO.getRequestedAmount().doubleValue() > creditProduct.getMaxAmount().doubleValue()){
+            creditApplicationRepository.updateApplicationStatus(creditApplicationId, ApplicationStatus.REJECTED.toString());
+        }
+        if(creditApplicationDTO.getTerm() < creditProduct.getMinTerm() || creditApplicationDTO.getTerm() > creditProduct.getMaxTerm()){
+            creditApplicationRepository.updateApplicationStatus(creditApplicationId, ApplicationStatus.REJECTED.toString());
+        }
+        if (creditApplicationDTO.getDownPayment() != null && creditApplicationDTO.getDownPayment().doubleValue() < creditProduct.getMinDownPayment().doubleValue()){
+            creditApplicationRepository.updateApplicationStatus(creditApplicationId, ApplicationStatus.REJECTED.toString());
+        }
     }
 
     private static <T> T getRandomElement(List<T> list) {

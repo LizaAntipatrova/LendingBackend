@@ -3,7 +3,7 @@ package com.lending.lendingbackend.auth.services;
 
 import com.lending.lendingbackend.auth.config.BCrypt.BCryptPasswordEncoder;
 import com.lending.lendingbackend.auth.data.entity.session.Session;
-import com.lending.lendingbackend.auth.exceptions.data.UnregisteredUserException;
+import com.lending.lendingbackend.exceptions.data.UnregisteredUserException;
 import com.lending.lendingbackend.auth.services.parser.AuthorizationHeaderToCredentialParser;
 import com.lending.lendingbackend.auth.services.parser.CookieHeaderParser;
 import com.lending.lendingbackend.auth.services.parser.Credential;

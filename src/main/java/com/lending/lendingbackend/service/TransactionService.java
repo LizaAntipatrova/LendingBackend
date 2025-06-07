@@ -22,6 +22,10 @@ public class TransactionService {
     private final TransactionRepository transactionRepository;
     private final CreditService creditService;
 
+    public List<Transaction> getTransactionsByContractNumber(Long contractNumber){
+        return transactionRepository.findAllByCredit_ContractNumber(contractNumber);
+    }
+
     @Transactional
     @Scheduled(cron = "0 0 0 1 * ?")  // 1-е число каждого месяца в полночь
     public void chargeInterest() {

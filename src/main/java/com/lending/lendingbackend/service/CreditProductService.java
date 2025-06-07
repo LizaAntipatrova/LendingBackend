@@ -24,7 +24,7 @@ public class CreditProductService {
                 .map(CreditProductToCreditProductDTOConverter::convertCreditProductToCreditProductDTO)
                 .collect(Collectors.toList());
     }
-    private CreditProduct getCreditProductByCode(Long code){
+    public CreditProduct getCreditProductByCode(Long code){
         return creditProductRepository.getCreditProductByCode(code);
     }
 

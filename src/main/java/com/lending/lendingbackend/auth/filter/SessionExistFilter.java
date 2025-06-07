@@ -1,6 +1,6 @@
 package com.lending.lendingbackend.auth.filter;
 
-import com.lending.lendingbackend.auth.exceptions.auth.InvalidCookieException;
+import com.lending.lendingbackend.exceptions.auth.InvalidCookieException;
 import com.lending.lendingbackend.auth.httpresponse.HttpResponse;
 import com.lending.lendingbackend.auth.services.AuthService;
 import com.lending.lendingbackend.auth.services.RedisSessionService;

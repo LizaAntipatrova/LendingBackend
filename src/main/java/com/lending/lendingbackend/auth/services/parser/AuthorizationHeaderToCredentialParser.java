@@ -1,8 +1,8 @@
 package com.lending.lendingbackend.auth.services.parser;
 
 
-import com.lending.lendingbackend.auth.exceptions.auth.DecodeCredentialsException;
-import com.lending.lendingbackend.auth.exceptions.auth.InvalidBasicAuthorizationHeaderException;
+import com.lending.lendingbackend.exceptions.auth.DecodeCredentialsException;
+import com.lending.lendingbackend.exceptions.auth.InvalidBasicAuthorizationHeaderException;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
