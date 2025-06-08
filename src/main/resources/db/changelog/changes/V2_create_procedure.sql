@@ -378,8 +378,8 @@ BEGIN
     WHERE id = p_application_id;
 
     -- Insert the credit record
-    INSERT INTO credits (contract_date, current_amount, application_id, status)
-    VALUES (NOW(), v_application_amount, p_application_id, p_status);
+    INSERT INTO credits (current_amount, application_id, status)
+    VALUES (v_application_amount, p_application_id, p_status);
 
     COMMIT;
 END;
@@ -394,6 +394,21 @@ AS $$
 BEGIN
     UPDATE credits
     SET status = p_status
+    WHERE contract_number = p_contract_number;
+
+    COMMIT;
+END;
+$$;
+
+CREATE OR REPLACE PROCEDURE confirm_credit(
+    p_contract_number BIGINT
+)
+    LANGUAGE plpgsql
+AS $$
+BEGIN
+    UPDATE credits
+    SET status = 'ACTIVE',
+        contract_date = NOW()
     WHERE contract_number = p_contract_number;
 
     COMMIT;

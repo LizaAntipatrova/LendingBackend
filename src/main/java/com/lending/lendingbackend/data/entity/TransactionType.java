@@ -4,6 +4,7 @@ import lombok.Data;
 
 
 public enum TransactionType {
+    DOWN_PAYMENT("Первоначальный платеж"),
     MONTHLY_PAYMENT("Ежемесячный платеж"),
     COMMISSION("Начисление процентов"),
     PENALTIES("Начисление штрафа"),

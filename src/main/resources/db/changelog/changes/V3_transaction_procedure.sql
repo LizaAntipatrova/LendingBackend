@@ -1,27 +1,37 @@
--- 1. Процедура для создания ежемесячного платежа
 CREATE OR REPLACE PROCEDURE create_monthly_payment(
     p_contract_number BIGINT,
     p_payment_amount DECIMAL(15,2))
     LANGUAGE plpgsql
 AS $$
+DECLARE
+    v_credit_status VARCHAR(20);
+    v_current_amount DECIMAL(15,2);
 BEGIN
-    -- Вставляем запись о платеже
-    INSERT INTO transactions (transaction_date, credit_id, amount, description)
-    VALUES (CURRENT_DATE, p_contract_number, p_payment_amount, 'MONTHLY_PAYMENT');
-
-    -- Обновляем текущую сумму долга
-    UPDATE credits
-    SET current_amount = current_amount - p_payment_amount
+    -- Получаем текущий статус и сумму кредита
+    SELECT status, current_amount INTO v_credit_status, v_current_amount
+    FROM credits
     WHERE contract_number = p_contract_number;
 
-    -- Проверяем, полностью ли погашен кредит
-    IF (SELECT current_amount FROM credits WHERE contract_number = p_contract_number) <= 0 THEN
-        UPDATE credits
-        SET status = 'CLOSED',
-            current_amount = 0
-        WHERE contract_number = p_contract_number;
-    END IF;
+    -- Проверяем, что кредит активен или просрочен
+    IF v_credit_status IN ('ACTIVE', 'EXPIRED') THEN
+        -- Вставляем запись о платеже
+        INSERT INTO transactions (transaction_date, credit_id, amount, description)
+        VALUES (CURRENT_DATE, p_contract_number, p_payment_amount, 'MONTHLY_PAYMENT');
 
+        -- Обновляем текущую сумму долга
+        UPDATE credits
+        SET current_amount = v_current_amount - p_payment_amount
+        WHERE contract_number = p_contract_number
+        RETURNING current_amount INTO v_current_amount;
+
+        -- Проверяем, полностью ли погашен кредит
+        IF v_current_amount <= 0 THEN
+            UPDATE credits
+            SET status = 'CLOSED',
+                current_amount = 0
+            WHERE contract_number = p_contract_number;
+        END IF;
+    END IF;
 END;
 $$;
 
@@ -91,25 +101,36 @@ $$;
 CREATE OR REPLACE PROCEDURE early_repayment(
     p_contract_number BIGINT,
     p_repayment_amount DECIMAL(15,2))
-LANGUAGE plpgsql
+    LANGUAGE plpgsql
 AS $$
+DECLARE
+    v_credit_status VARCHAR(20);
+    v_current_amount DECIMAL(15,2);
 BEGIN
-    -- Вставляем запись о досрочном погашении
-    INSERT INTO transactions (transaction_date, credit_id, amount, description)
-    VALUES (CURRENT_DATE, p_contract_number, p_repayment_amount, 'EARLY_REPAYMENT');
-
-    -- Обновляем текущую сумму долга
-    UPDATE credits
-    SET current_amount = current_amount - p_repayment_amount
+    -- Получаем текущий статус и сумму кредита
+    SELECT status, current_amount INTO v_credit_status, v_current_amount
+    FROM credits
     WHERE contract_number = p_contract_number;
 
-    -- Проверяем, полностью ли погашен кредит
-    IF (SELECT current_amount FROM credits WHERE contract_number = p_contract_number) <= 0 THEN
-        UPDATE credits
-        SET status = 'CLOSED',
-            current_amount = 0
-        WHERE contract_number = p_contract_number;
-    END IF;
+    -- Проверяем, что кредит активен или просрочен
+    IF v_credit_status IN ('ACTIVE', 'EXPIRED') THEN
+        -- Вставляем запись о досрочном погашении
+        INSERT INTO transactions (transaction_date, credit_id, amount, description)
+        VALUES (CURRENT_DATE, p_contract_number, p_repayment_amount, 'EARLY_REPAYMENT');
 
+        -- Обновляем текущую сумму долга
+        UPDATE credits
+        SET current_amount = v_current_amount - p_repayment_amount
+        WHERE contract_number = p_contract_number
+        RETURNING current_amount INTO v_current_amount;
+
+        -- Проверяем, полностью ли погашен кредит
+        IF v_current_amount <= 0 THEN
+            UPDATE credits
+            SET status = 'CLOSED',
+                current_amount = 0
+            WHERE contract_number = p_contract_number;
+        END IF;
+    END IF;
 END;
 $$;

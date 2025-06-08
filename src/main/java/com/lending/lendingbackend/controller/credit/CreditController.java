@@ -4,10 +4,7 @@ import com.lending.lendingbackend.data.entity.CreditStatus;
 import com.lending.lendingbackend.data.entity.PaymentType;
 import com.lending.lendingbackend.data.entity.Transaction;
 import com.lending.lendingbackend.dto.CreditDTO;
-import com.lending.lendingbackend.service.CreditContractGenerateDocumentService;
-import com.lending.lendingbackend.service.CreditService;
-import com.lending.lendingbackend.service.CreditTransactionGenerateDocumentService;
-import com.lending.lendingbackend.service.TransactionService;
+import com.lending.lendingbackend.service.*;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -39,7 +36,7 @@ public class CreditController {
 
     @SneakyThrows
     @PostMapping("/credit/contract")
-    public void getTransactionList(HttpServletResponse response, @RequestParam("id") Long id) {
+    public void getCreditContract(HttpServletResponse response, @RequestParam("id") Long id) {
         // Устанавливаем заголовки для ответа
         response.setContentType("application/pdf");
         response.setHeader("Content-Disposition",
@@ -57,7 +54,7 @@ public class CreditController {
     }
     @SneakyThrows
     @PostMapping("/credit/transactions")
-    public void getCreditContract(HttpServletResponse response, @RequestParam("id") Long id) {
+    public void getTransactionList(HttpServletResponse response, @RequestParam("id") Long id) {
         // Устанавливаем заголовки для ответа
         response.setContentType("application/pdf");
         response.setHeader("Content-Disposition",
@@ -71,6 +68,22 @@ public class CreditController {
         // Генерируем PDF и пишем прямо в OutputStream
         creditTransactionGenerateDocumentService.generateCreditStatement(out, id, transactions, creditDTO.getManagerName());
 
+        out.flush();
+
+    }
+
+    @SneakyThrows
+    @PostMapping("/credit/schedule")
+    public void getPaymentSchedule(HttpServletResponse response, @RequestParam("id") Long id) {
+        // Устанавливаем заголовки для ответа
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition",
+                "attachment; filename=credit_payment_schedule_" + id + ".pdf");
+
+        // Получаем OutputStream для записи PDF
+        OutputStream out = response.getOutputStream();
+        CreditDTO creditDTO = creditService.getCreditByContractNumber(id);
+        PaymentScheduleService.createPaymentSchedulePdf(out, creditDTO);
         out.flush();
 
     }

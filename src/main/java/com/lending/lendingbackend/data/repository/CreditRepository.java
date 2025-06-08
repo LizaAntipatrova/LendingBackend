@@ -19,4 +19,7 @@ public interface CreditRepository extends JpaRepository<Credit, Long> {
     @Procedure(name = "Credit.updateCreditStatus")
     void updateCreditStatus(@Param("p_contract_number") Long contractNumber,
                             @Param("p_status") String status);
+
+    @Procedure(name = "Credit.confirmCredit")
+    void confirmCredit(@Param("p_contract_number") Long contractNumber);
 }

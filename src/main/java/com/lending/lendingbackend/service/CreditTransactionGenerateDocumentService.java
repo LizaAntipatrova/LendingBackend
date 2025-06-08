@@ -15,6 +15,7 @@ import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
@@ -69,7 +70,7 @@ public class CreditTransactionGenerateDocumentService {
         document.add(docTitle);
 
         // Информация о кредите
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
         PdfPTable infoTable = new PdfPTable(2);
         infoTable.setWidthPercentage(100);
@@ -80,7 +81,7 @@ public class CreditTransactionGenerateDocumentService {
         infoTable.addCell(createCell("Номер договора:", tableHeaderFont));
         infoTable.addCell(createCell(contractNumber.toString(), tableCellFont));
         infoTable.addCell(createCell("Дата составления:", tableHeaderFont));
-        infoTable.addCell(createCell(dateFormat.format(Date.from(Instant.now())), tableCellFont));
+        infoTable.addCell(createCell(LocalDate.now().format(formatter), tableCellFont));
 
         document.add(infoTable);
 
@@ -103,7 +104,7 @@ public class CreditTransactionGenerateDocumentService {
 
         // Данные транзакций
         for (Transaction transaction : transactions) {
-            transactionsTable.addCell(createCell(transaction.getTransactionDate().toString(), tableCellFont));
+            transactionsTable.addCell(createCell(transaction.getTransactionDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")), tableCellFont));
             transactionsTable.addCell(createCell(String.format("%.2f руб.", transaction.getAmount()), tableCellFont));
             transactionsTable.addCell(createCell(transaction.getDescription().getRussianName(), tableCellFont));
         }

@@ -25,6 +25,13 @@ import java.util.List;
                         @StoredProcedureParameter(name = "p_contract_number", type = Long.class, mode = ParameterMode.IN),
                         @StoredProcedureParameter(name = "p_status", type = String.class, mode = ParameterMode.IN)
                 }
+        ),
+        @NamedStoredProcedureQuery(
+                name = "Credit.confirmCredit",
+                procedureName = "confirm_credit",
+                parameters = {
+                        @StoredProcedureParameter(name = "p_contract_number", type = Long.class, mode = ParameterMode.IN)
+                }
         )
 })
 

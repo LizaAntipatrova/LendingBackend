@@ -2,6 +2,8 @@ package com.lending.lendingbackend.service;
 
 import com.lending.lendingbackend.data.entity.Credit;
 import com.lending.lendingbackend.data.entity.CreditStatus;
+import com.lending.lendingbackend.data.entity.Transaction;
+import com.lending.lendingbackend.data.entity.TransactionType;
 import com.lending.lendingbackend.data.repository.CreditRepository;
 import com.lending.lendingbackend.dto.CreditDTO;
 import com.lending.lendingbackend.service.convertor.CreditToCreditDTOConverter;
@@ -9,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,11 +52,21 @@ public class CreditService {
         creditRepository.updateCreditStatus(contractNumber, CreditStatus.EXPIRED.toString());
     }
     public void confirmCredit(Long contractNumber){
-        updateCreditStatusToActive(contractNumber);
+        creditRepository.confirmCredit(contractNumber);
         Credit credit = creditRepository.findCreditByContractNumber(contractNumber);
-        if (credit.getApprovedApplication().getDownPayment() != null){
+        if (credit.getApprovedApplication().getDownPayment() != null 
+                && credit.getApprovedApplication().getDownPayment().doubleValue() > 0){
             credit.setCurrentAmount(BigDecimal.valueOf(credit.getCurrentAmount().doubleValue() - credit.getApprovedApplication().getDownPayment().doubleValue()));
+            Transaction transaction = new Transaction();
+            transaction.setAmount(credit.getApprovedApplication().getDownPayment());
+            transaction.setTransactionDate(LocalDateTime.now());
+            transaction.setDescription(TransactionType.DOWN_PAYMENT);
+            transaction.setCredit(credit);
+            List<Transaction> transactions = new ArrayList<>();
+            transactions.add(transaction);
+            credit.setTransactions(transactions);
             creditRepository.save(credit);
+
         }
     }
 }

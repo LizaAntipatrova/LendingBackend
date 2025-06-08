@@ -12,6 +12,8 @@ import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
 import java.io.OutputStream;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Service
 @RequiredArgsConstructor
@@ -49,7 +51,9 @@ public class CreditContractGenerateDocumentService {
 
         // Данные договора (можно вынести в параметры метода)
         String contractNumber = creditDTO.getContractNumber().toString();
-        String contractDate = creditDTO.getContractDate().toString();
+        String contractDate = creditDTO.getContractDate() == null?
+                LocalDate.now().toString()
+                :creditDTO.getContractDate().toString();
         String bankName = "ООО «МикроБанк»";
         String managerName = creditDTO.getManagerName();
         String clientName = creditDTO.getClientName();
@@ -72,8 +76,9 @@ public class CreditContractGenerateDocumentService {
 
         addEmptyLine(document, 1);
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         // Дата и место заключения
-        Paragraph datePlace = new Paragraph("г. Рязань «___» _______________ 20___г.", normalFont);
+        Paragraph datePlace = new Paragraph("г. Рязань "+ LocalDate.now().format(formatter), normalFont);
         datePlace.setAlignment(Element.ALIGN_CENTER);
         document.add(datePlace);
 
